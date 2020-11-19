@@ -1,3 +1,4 @@
+// index.js를 app.js와 init.js로 분리 ( 이 파일은 사용되지 않음 2.7에서 스탑된 파일 )
 // const express = require('express');
 import express from "express"; // 위 줄을 최신 자바스크립트로 바꿈 
 import morgan from "morgan"; // logging middleware
@@ -30,10 +31,10 @@ const handleHome = (req, res) => {
 // } // babel 설치 및 적용 후 아래와 같이 수정 // arrow function
 const handleProfile = (req, res) => res.send("you are on my profile"); // arrow function 
 
-const betweenHome = (req, res, next) => {
-    console.log("I'm between");
-    next();
-}
+// const betweenHome = (req, res, next) => {
+//     console.log("I'm between");
+//     next();
+// }
 
 app.use(cookieParser());
 app.use(bodyParser.json()); // 나중에 이것이 없을때 어떤 결과를 나타내는지 비교해볼 것 임
@@ -47,4 +48,5 @@ app.use(morgan("dev")); // tiny, combined, dev, ... 등 여러가지 logging 종
 // app.get("/", betweenHome, handleHome); // 콜백 // get에 대한 request가 있지만 response가 없으면 무한 로딩이 걸림 // local middleware
 app.get("/", handleHome);
 app.get("/profile", handleProfile);
+
 app.listen(PORT, handleListening); // 포트 4000번을 리슨
