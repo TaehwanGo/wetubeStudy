@@ -6,9 +6,23 @@
   "author": "Taehwan Go",
   "license": "ISC",
   "dependencies": {
+    "@babel/core": "^7.12.3",
+    "@babel/node": "^7.12.6",
+    "@babel/preset-env": "^7.12.1",
     "express": "^4.17.1"
   },
-  "scripts":{
-    "start": "node index.js"
+  "scripts": {
+    "start": "nodemon --exec babel-node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TaehwanGo/wetubeStudy.git"
+  },
+  "bugs": {
+    "url": "https://github.com/TaehwanGo/wetubeStudy/issues"
+  },
+  "homepage": "https://github.com/TaehwanGo/wetubeStudy#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.6"
   }
 }
