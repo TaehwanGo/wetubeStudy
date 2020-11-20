@@ -1,0 +1,17 @@
+doctype html
+html
+    head
+        //- 아래와 같이 html 태그가 포함된 코드로 남겨둬도 잘 인식함 
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
+        title | #{siteName}
+    body
+        //- header
+        //-     h1 Wetube
+        include ../partials/header
+        main
+            block content
+            //- 여기 block의 content에 각 페이지별 화면이 추가 될 것임 
+            //- extends 로 main.pug를 불러와서 block content로 매칭시킨 후 내용을 집어 넣음
+        //- footer //- include로 footer partial을 대체
+        //-     span &copy; Wetube
+        include ../partials/footer
