@@ -3,6 +3,9 @@ extends layouts/main.pug
 
 block content
     .videos
-        h1 Video
         //- 일단은 가짜 데이터베이스로 작업할 것임 
         //- 실제로 비디오를 보여주기 전에 템플릿을 테스트 할 수 있음 
+        //- for each 반복문을 이렇게 사용가능한건가? pug에서만 가능한 듯
+        each video in videos 
+            h1=video.title
+            p= video.description

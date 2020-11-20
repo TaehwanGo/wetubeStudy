@@ -1,4 +1,8 @@
-export const home = (req, res) => res.render("home", {pageTitle:'Home'}); // res.send("Home") 대신 html을 보내기 위해 render로 수정, /views가 default 폴더이기 때문에 따로 import하지 않아도 자동으로 찾아서 전송함
+import {videos} from "../db";
+export const home = (req, res) => {
+    // home화면에 비디오 목록을 띄울 것 임
+    res.render("home", {pageTitle:'Home', videos}); // res.send("Home") 대신 html을 보내기 위해 render로 수정, /views가 default 폴더이기 때문에 따로 import하지 않아도 자동으로 찾아서 전송함
+}
 export const search = (req, res) => {
     // const searchingBy = req.query.term; // ES6 방식
     const {
