@@ -3,6 +3,10 @@ header.header
         a(href=routes.home)
             i.fab.fa-youtube
     .header__column
+        form(action=routes.search, method="get")
+            //- action은 이동할 url 임 
+            input(type="text", placeholder="Search by term...", name="term")
+    .header__column
         ul
             li
                 //- a(href="#") Join //- middlewares.js에서 routes.js를 import후 res.locals로 공유 했으므로 사용 가능
