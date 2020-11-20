@@ -1,0 +1,7 @@
+//- 어떤 object가 전달되면 그 object의 이름은 video가 될 것임
+//- 전달 받은 object에서 title 키에 해당하는 값을 h1 태그로 표시
+mixin videoBlock(video = {})
+    .videoBlock
+        video.videoBlock__thumbnail(src=video.videoFile, controls=true)
+        h4.videoBlock__title=video.title
+        h6.videoBlock__views=video.views
