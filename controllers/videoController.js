@@ -9,7 +9,7 @@ export const search = (req, res) => {
         query: {term: searchingBy} // term에 searchingBy라는 새로운 이름 부여
     } = req; // 이게 왜 더 좋은 방식이지? 
     // console.log(searchingBy);
-    res.render("search", {pageTitle:'Search', searchingBy}); // searchingBy: searchingBy를 간단히 할 수 있음
+    res.render("search", {pageTitle:'Search', searchingBy, videos}); // searchingBy: searchingBy를 간단히 할 수 있음
 }
 export const upload = (req, res) => res.render("upload", {pageTitle:'Upload'});
 export const videoDetail = (req, res) => res.render("videoDetail", {pageTitle:'Video Detail'});
