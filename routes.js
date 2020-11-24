@@ -43,7 +43,7 @@ const routes = {
   // videoDetail: VIDEO_DETAIL,
   videoDetail: (id) => {
     if(id){ // id 값이 null 또는 undefined가 아니라면 
-      return `videos/${id}`;
+      return `/videos/${id}`;
     } else {
       return VIDEO_DETAIL;
     }

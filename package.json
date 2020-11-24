@@ -17,7 +17,7 @@
     "pug": "^3.0.0"
   },
   "scripts": {
-    "start": "nodemon --exec babel-node challenges/assignment6/assignment6.js --delay 2"
+    "start": "nodemon --exec babel-node init.js --delay 2"
   },
   "repository": {
     "type": "git",

@@ -25,7 +25,11 @@ export const postLogin = (req, res) => {
     res.redirect(routes.home); // successful // 나중엔 DB에 있는 비밀번호와 같은지 검사해야 함 
     // 나중에 authentication(사용자 인증)에 문제가 생기면 다시 login 화면을 표시 하게 할 예정 
 }
-export const logout = (req, res) => res.render("logout", {pageTitle:'Logout'});
+export const logout = (req, res) => {
+    // To Do : process log out
+    res.redirect(routes.home);
+    // res.render("logout", {pageTitle:'Logout'}); // logout.pug는 삭제해도 됨
+}
 export const userDetail = (req, res) => res.render("userDetail", {pageTitle:'User Detail'});
 export const editProfile = (req, res) => res.render("editProfile", {pageTitle:'Edit Profile'});
 export const changePassword = (req, res) => res.render("changePassword", {pageTitle:'Change Password'});
