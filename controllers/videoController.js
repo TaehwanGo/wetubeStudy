@@ -1,4 +1,4 @@
-import {videos} from "../db";
+// import {videos} from "../db"; // 더 이상 controller에서 import하는게 아닌 init.js에서 import 해서 사용 할 것임
 import routes from "../routes"
 
 export const home = (req, res) => {
