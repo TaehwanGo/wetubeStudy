@@ -1,4 +1,12 @@
 extends layouts/main
 
 block content
-    p Video Detail 
+    .video__player
+        video(src=`/${video.fileUrl}`)
+        //- 서버에 있는 파일이라 위와 같이 /를 붙여 줘야 한다
+        //- 나중엔 파일을 aws로 옮길 것 임
+    .video__info
+        a(href=routes.editVideo) Edit video
+        h5.video__title=video.title
+        span.video__views=video.views
+        p.video__description=video.description

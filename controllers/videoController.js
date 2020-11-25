@@ -40,6 +40,18 @@ export const postUpload = async (req, res) => { // object는 upload.pug페이지
     res.redirect(routes.videoDetail(newVideo.id)); 
 }
 
-export const videoDetail = (req, res) => res.render("videoDetail", {pageTitle:'Video Detail'});
+export const videoDetail = async (req, res) => {
+    // console.log(req.params); // 만약 controller에서 어떤 data를 가지고 있다는 것을 표현하고 싶다면 더블콜론(:)과 이름을 넣으면 된다
+    const {
+        params: {id}
+    } = req;
+    try{
+        const video = await Video.findById(id);
+        // console.log(video);
+        res.render("videoDetail", {pageTitle:'Video Detail', video});
+    } catch {
+        res.redirect(routes.home);
+    }
+}
 export const editVideo = (req, res) => res.render("editVideo", {pageTitle:'Edit Video'});
 export const deleteVideo = (req, res) => res.render("deleteVideo", {pageTitle:'Delete Video'});
