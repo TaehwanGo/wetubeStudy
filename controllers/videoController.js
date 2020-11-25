@@ -23,12 +23,21 @@ export const search = (req, res) => {
 }
 
 export const getUpload = (req, res) => res.render("upload", {pageTitle:'Upload'});
-export const postUpload = (req, res) => { // object는 upload.pug페이지로부터 post방식으로 전달된 req의 body에 존재함 
+export const postUpload = async (req, res) => { // object는 upload.pug페이지로부터 post방식으로 전달된 req의 body에 존재함 
     const {
-        body:{ file, title, description}
+        body:{ title, description}, // 여기서 body는 존재하지 않고 file, title, description만 존재함
+        file: { path}
     } = req;
     // To Do : Upload and save video
-    res.redirect(routes.videoDetail(321312)); // it's a fake id
+    // console.log(body, file); // file 이 undefined로 나옴 - 강의에선 multer로 인해 videos/에 파일 생성되면서 url이 찍혀야 함
+    const newVideo = await Video.create({
+        fileUrl: path,
+        title,
+        description
+    });
+    console.log(newVideo);
+    // res.render("upload", {pageTitle: "Upload"});
+    res.redirect(routes.videoDetail(newVideo.id)); 
 }
 
 export const videoDetail = (req, res) => res.render("videoDetail", {pageTitle:'Video Detail'});
