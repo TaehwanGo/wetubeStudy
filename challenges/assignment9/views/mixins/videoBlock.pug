@@ -1,0 +1,6 @@
+mixin videoBlock(movie = {})
+    .videoBlock
+        a(href=`/${movie.id}`)
+            h4.videoBlock__title=movie.title
+        //- a(href=routes.videoDetail(movie.id))
+        //-     h4.videoBlock__title=movie.title

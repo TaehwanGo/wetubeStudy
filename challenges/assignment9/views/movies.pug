@@ -1,0 +1,18 @@
+include mixins/videoBlock
+
+doctype html
+html
+  head
+    title #{pageTitle} | #{siteName}
+  body
+    main
+      h1=pageTitle
+      //- each item in movies // movies 는 컨트롤러에서 db에서 받아온거를 넘김
+      each item in movies
+        +videoBlock({
+            id:item.id,
+            title:item.title,
+            genres:item.genres,
+            summary:item.summary
+        })
+        //- id만 넘겨도 되는데 일단 keep

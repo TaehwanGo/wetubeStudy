@@ -1,0 +1,14 @@
+include mixins/genreBlock
+
+doctype html
+html
+  head
+    title #{pageTitle} | #{siteName}
+  body
+    main
+      h1.movie-title=movieObject.title
+      .movie-summary=movieObject.summary
+      ul.movie-genres
+        each item in movieObject.genres
+            +genreBlock(item)
+            
