@@ -22,7 +22,7 @@ import {
         res.render("detail", { pageTitle: movieObject.title, movieObject });
         // console.log(movieObject.genres);
     } catch(error) {
-        res.render("404", { pageTitle: "error"});
+        res.render("404", { pageTitle: "404 error"});
     }
   };
   export const filterMovie = async (req, res) => {
@@ -38,7 +38,7 @@ import {
         const movies = getMovieByMinimumRating(rating);
         res.render("movies", { pageTitle: `Searching by rating: ${req.query.rating}`, movies});
     } else {
-        res.render("404", { pageTitle: "error"});
+        res.render("404", { pageTitle: "404 error"});
     }
   };
   
