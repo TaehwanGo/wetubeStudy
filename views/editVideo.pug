@@ -2,8 +2,9 @@ extends layouts/main
 
 block content
     .form-container
-        form(action=`/videos${routes.editVideo}`, method="post")
-            input(type="text", placeholder="Title", name="title")
-            textarea(name="description", placeholder="Description")
+        //- controller에서 db에서 가져온 video객체를 전달했으므로 value값을 미리 채울 수 있음, textarea는 value가 없음 - 제목과 설명이 현재값을 가지게 되어 있음
+        form(action=`${routes.editVideo(video.id)}`, method="post")
+            input(type="text", placeholder="Title", name="title", value=video.title)
+            textarea(name="description", placeholder="Description")=video.description
             input(type="submit", value="Update Video")
-        a.form-container__link.form-container__link--delete(href=`/videos${routes.deleteVideo}`) Delete Video 
+        a.form-container__link.form-container__link--delete(href=routes.deleteVideo(video.id)) Delete Video 

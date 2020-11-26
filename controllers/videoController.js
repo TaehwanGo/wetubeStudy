@@ -48,10 +48,42 @@ export const videoDetail = async (req, res) => {
     try{
         const video = await Video.findById(id);
         // console.log(video);
-        res.render("videoDetail", {pageTitle:'Video Detail', video});
+        res.render("videoDetail", {pageTitle: video.title, video});
     } catch {
         res.redirect(routes.home);
     }
 }
-export const editVideo = (req, res) => res.render("editVideo", {pageTitle:'Edit Video'});
-export const deleteVideo = (req, res) => res.render("deleteVideo", {pageTitle:'Delete Video'});
+export const getEditVideo = async (req, res) => {
+    const {
+        params: {id}
+    } = req; // req object안에 params 변수안의 값을 id라는 변수로 받음 
+    try{
+        const video = await Video.findById(id); // db에서 id값이 일치하는 video object를 가져와서 video에 저장한 다음 진행
+        res.render("editVideo", {pageTitle: `Edit ${video.title}`, video}); // 위에서 가져온 video 객체 : video
+    } catch(error) {
+        res.redirect(routes.home);
+    }
+}
+export const postEditVideo = async (req, res) => {
+    const {
+        params: {id},
+        body: {title, description}
+    } = req;
+    try {
+        // 변수에 저장하지 않는 이유는 업데이트하면 그걸로 끝이기 때문에 // 원래는 _id:id 이지만 mongoose가 해결할 거라 믿어서 id만 적음 // 그러나 mongoose는 그만큼 똑똑하지 못해서 _id:id로 적어 줘야 함
+        await Video.findOneAndUpdate({ _id:id }, {title, description}); // form의 default value 설정함
+        res.redirect(routes.videoDetail(id)); // 내 생각 : `/videos/${id}` // 정답 : routes.videoDetail(id)
+    } catch(error) {
+        res.redirect(routes.home); // 매번 try-catch를 하지 않고 middleware를 만들어서 할 수도 있음 
+    }
+}
+export const deleteVideo = async (req, res) => {
+    // res.render("deleteVideo", {pageTitle:'Delete Video'});
+    const {
+        params: {id}
+    } = req;
+    try{
+        await Video.findOneAndRemove({_id:id});
+    } catch(error) {}
+    res.redirect(routes.home); // try와 catch가 공통적으로 redirect home이라서 밖으로 뺌
+}
