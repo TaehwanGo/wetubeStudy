@@ -27,4 +27,4 @@ const VideoSchema = new mongoose.Schema({
 // 위 스키마로 부터 model을 작성
 const model = mongoose.model("Video", VideoSchema); // model의 이름은 Video 이고 schema는 위의 VideoSchema를 사용
 
-export default model;
+export default model; // init.js에서 import 됨 

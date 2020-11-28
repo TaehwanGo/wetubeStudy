@@ -15,13 +15,20 @@ export const home = async (req, res) => { // async가 없다면 videos를 발견
     // console.log(videos);
     // home화면에 비디오 목록을 띄울 것 임
 }
-export const search = (req, res) => {
+export const search = async (req, res) => {
     // const searchingBy = req.query.term; // ES6 방식
     const {
         query: {term: searchingBy} // term에 searchingBy라는 새로운 이름 부여
-    } = req; // 이게 왜 더 좋은 방식이지? 
+    } = req; 
     // console.log(searchingBy);
-    res.render("search", {pageTitle:'Search', searchingBy}); // searchingBy: searchingBy를 간단히 할 수 있음
+    let videos = [];
+    try{
+        videos = await Video.find({title:{$regex: searchingBy, $options: "i" } }); // 정확히 똑같은 단어만 찾는다면 find({title:searchingBy})로 하면 되지만 
+        // 포함된 단어를 찾기 위해 mongoose의 regex를 사용함, "i" : insensitive (대소문자 구분없이 찾아줌)
+    } catch(error) {
+        console.log(error);
+    }
+    res.render("search", {pageTitle:'Search', searchingBy, videos}); // searchingBy: searchingBy를 간단히 할 수 있음
 }
 
 export const getUpload = (req, res) => res.render("upload", {pageTitle:'Upload'});
