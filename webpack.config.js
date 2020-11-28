@@ -8,10 +8,18 @@ const ENTRY_FILE = path.resolve(__dirname, "assets", "js", "main.js");
 const OUTPUT_DIR = path.join(__dirname, "static");
 
 const config = {
-    entry: ENTRY_FILE,
+    entry: ["@babel/polyfill", ENTRY_FILE],
     mode: MODE,
     module: { // module을 발견할 때마다, 다음과 같은 rules를 따르라고 하고 있음 
         rules: [
+            {
+                test: /\.(js)$/,
+                use: [
+                    {
+                        loader:"babel-loader"
+                    }
+                ]
+            },
             {
                 // scss확장자파일을 만날때 마다, 어떤 loader를 실행
                 test: /\.(scss)$/,

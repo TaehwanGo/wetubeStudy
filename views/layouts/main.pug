@@ -4,6 +4,7 @@ html
         //- 아래와 같이 html 태그가 포함된 코드로 남겨둬도 잘 인식함 
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
         title #{pageTitle} | #{siteName}
+        link(rel="stylesheet", href="/static/styles.css")
     body
         //- header
         //-     h1 Wetube
@@ -15,3 +16,4 @@ html
         //- footer //- include로 footer partial을 대체
         //-     span &copy; Wetube
         include ../partials/footer
+        script(src="/static/main.js")
