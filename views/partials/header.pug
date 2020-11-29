@@ -1,23 +1,24 @@
 header.header
-    .header__column
-        a(href=routes.home)
-            i.fab.fa-youtube
-    .header__column
-        form(action=routes.search, method="get")
-            //- action은 이동할 url 임 
-            input(type="text", placeholder="Search by term...", name="term")
-    .header__column
-        ul
-            if !user.isAuthenticated
-                li
-                    //- a(href="#") Join //- middlewares.js에서 routes.js를 import후 res.locals로 공유 했으므로 사용 가능
-                    a(href=routes.join) Join
-                li
-                    a(href=routes.login) Log In
-            else
-                li
-                    a(href=`/videos${routes.upload}`) Upload
-                li
-                    a(href=routes.userDetail(user.id)) Profile
-                li
-                    a(href=routes.logout) Log out
+    .header__wrapper
+        .header__column
+            a(href=routes.home)
+                i.fab.fa-youtube
+        .header__column
+            form(action=routes.search, method="get")
+                //- action은 이동할 url 임 
+                input(type="text", placeholder="Search by term...", name="term")
+        .header__column
+            ul
+                if !user.isAuthenticated
+                    li
+                        //- a(href="#") Join //- middlewares.js에서 routes.js를 import후 res.locals로 공유 했으므로 사용 가능
+                        a(href=routes.join) Join
+                    li
+                        a(href=routes.login) Log In
+                else
+                    li
+                        a(href=`/videos${routes.upload}`) Upload
+                    li
+                        a(href=routes.userDetail(user.id)) Profile
+                    li
+                        a(href=routes.logout) Log out

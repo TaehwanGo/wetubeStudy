@@ -1,5 +1,4 @@
-@import "config/_variables.scss";
-
-body {
-    background-color: $sexyColor;
-}
+@import "config/_variables.scss"; // sass file에만 under bar를 붙임 
+@import "config/reset.scss"; // reset이나 main은 사용자들이 사용 할 것이라 _를 붙여서 구분함 
+@import "main.scss";
+@import "partials/header.scss";
