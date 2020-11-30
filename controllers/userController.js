@@ -1,14 +1,15 @@
 import routes from "../routes";
+import User from "../models/User";
 
 export const getJoin = (req, res) => { // /join에 get 방식에 해당하는 컨트롤러
     res.render("join", {pageTitle:'Join'});
 }
-export const postJoin = (req, res) => { // /join에 post 방식에 해당하는 컨트롤러
+export const postJoin = async (req, res) => { // /join에 post 방식에 해당하는 컨트롤러
     // console.log(req.body); // body parser랑 관련이 있는건가? 맞네 body parser를 쓰지 않으면 undefined로 나옴 
     const {
         body: {name, email, password, password2}
     } = req;
-    console.log(req.body); 
+    // console.log(req.body); // 회원정보 
     if(password !== password2){
         // send wrong status code
         res.status(400);
@@ -16,7 +17,18 @@ export const postJoin = (req, res) => { // /join에 post 방식에 해당하는 
     }
     else{
         // To Do: Resgister User
+        try{
+            const user = await User({ // User.create 를 사용하면 password가 암호화가 안됨 
+                name, 
+                email
+            }); // db에 user 등록
+            await User.register(user, password); // 이게 뭔지 잘 모르겠네 위 create이랑 무슨차이지? //register는 object를 받아서 password를 추가 후 등록
+        } catch(error) {
+            console.log(error);
+        }
+
         // To Do: Log user in
+
         res.redirect(routes.home);
     }
 }
