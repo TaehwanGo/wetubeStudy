@@ -1,10 +1,11 @@
+import passport from "passport";
 import routes from "../routes";
 import User from "../models/User";
 
 export const getJoin = (req, res) => { // /join에 get 방식에 해당하는 컨트롤러
     res.render("join", {pageTitle:'Join'});
 }
-export const postJoin = async (req, res) => { // /join에 post 방식에 해당하는 컨트롤러
+export const postJoin = async (req, res, next) => { // /join에 post 방식에 해당하는 컨트롤러 // 회원가입 시 자동로그인을 위해 middleware로 바꿈 : next() 추가
     // console.log(req.body); // body parser랑 관련이 있는건가? 맞네 body parser를 쓰지 않으면 undefined로 나옴 
     const {
         body: {name, email, password, password2}
@@ -23,20 +24,22 @@ export const postJoin = async (req, res) => { // /join에 post 방식에 해당�
                 email
             }); // db에 user 등록
             await User.register(user, password); // 이게 뭔지 잘 모르겠네 위 create이랑 무슨차이지? //register는 object를 받아서 password를 추가 후 등록
+            next(); // req, res 가 그대로 전달 됨(postLogin 으로)
         } catch(error) {
             console.log(error);
+            // res.redirect(routes.home);
         }
-
-        // To Do: Log user in
-
-        res.redirect(routes.home);
     }
 }
-export const getLogin = (req, res) => res.render("login", {pageTitle:'Login'});
-export const postLogin = (req, res) => {
-    res.redirect(routes.home); // successful // 나중엔 DB에 있는 비밀번호와 같은지 검사해야 함 
-    // 나중에 authentication(사용자 인증)에 문제가 생기면 다시 login 화면을 표시 하게 할 예정 
-}
+export const getLogin = (req, res) => 
+    res.render("login", {pageTitle:'Login'});
+
+// passport 인증 방식은 username(여기선 email)과 password를 찾아보도록 설정되어 있음 
+export const postLogin = passport.authenticate('local', { // 'local'은 strategy 중 하나임(ex github or facebook or email)
+    failureRedirect: routes.login,
+    successRedirect: routes.home
+}); 
+
 export const logout = (req, res) => {
     // To Do : process log out
     res.redirect(routes.home);

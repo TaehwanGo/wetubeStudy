@@ -2,7 +2,7 @@
 import passport from "passport";
 import User from "./models/User";
 
-passport.use(user.createStrategy()); // strategy: 로그인 하는 방법 
+passport.use(User.createStrategy()); // strategy: 로그인 하는 방법 
 /** 아래와 같이 긴 코드를 user.createStrategy() 로 간단하게 사용가능하게 해줌 
  * var passport = require('passport')
   , LocalStrategy = require('passport-local').Strategy;
