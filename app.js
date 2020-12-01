@@ -4,6 +4,7 @@ import helmet from "helmet";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import passport from "passport";
+import session from "express-session";
 // import { userRouter } from "./routers/userRouter";
 import { localsMiddleware } from "./middlewares"; // 알파벳 순서로 정렬하는게 나중에 보기 편함 
 import routes from "./routes";
@@ -22,9 +23,15 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(morgan("dev"));
-
+app.use(
+    session({
+        secret: process.env.COOKIE_SECRET,
+        resave: true,
+        saveUninitialized: false
+    })
+);  // passport가 스스로 쿠키를 들여다 봐서, 그 쿠키정보에 해당하는 사용자를 찾아줌
 app.use(passport.initialize()); // 위에서 실행된 cookieParser로 부터 쿠키가 쭉 여기까지 내려와서 passport는 초기화되고 
-app.use(passport.session());  // passport가 스스로 쿠키를 들여다 봐서, 그 쿠키정보에 해당하는 사용자를 찾아줌
+app.use(passport.session());
 
 // passport는 자기가 찾은 그 사용자를 req object에 담고 middleware.js에서 전역변수로 만듦
 app.use(localsMiddleware); // 이게 아래 라우터들 다음에 온다면 라우터들은 이 localsMiddleware를 사용하지 못 함

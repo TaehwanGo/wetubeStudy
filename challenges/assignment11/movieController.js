@@ -46,7 +46,7 @@ export const postAddMovie = async (req, res) => {
     title,
     synopsis,
     genres:genresArray
-  }; // genresArray가 왜 string으로 나올까
+  }; 
 
   console.log(newMovie);
 

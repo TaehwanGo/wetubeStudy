@@ -23,13 +23,14 @@ export const postJoin = async (req, res, next) => { // /join에 post 방식에 �
                 name, 
                 email
             }); // db에 user 등록
+            // console.log(email);
             await User.register(user, password); // 이게 뭔지 잘 모르겠네 위 create이랑 무슨차이지? //register는 object를 받아서 password를 추가 후 등록
             next(); // req, res 가 그대로 전달 됨(postLogin 으로)
         } catch(error) {
             console.log(error);
             // res.redirect(routes.home);
         }
-    }
+    } 
 }
 export const getLogin = (req, res) => 
     res.render("login", {pageTitle:'Login'});

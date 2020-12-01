@@ -9,7 +9,8 @@ header.header
                 input(type="text", placeholder="Search by term...", name="term")
         .header__column
             ul
-                if !user.isAuthenticated
+                //- 왜 항상 로그인 된걸로 나오지? middleware에서 ||{}을 ||null로 바꾸니 됨
+                if !user
                     li
                         //- a(href="#") Join //- middlewares.js에서 routes.js를 import후 res.locals로 공유 했으므로 사용 가능
                         a(href=routes.join) Join
