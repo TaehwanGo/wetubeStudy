@@ -11,6 +11,9 @@ const USERS = "/users";
 const USER_DETAIL = "/:id";
 const EDIT_PROFILE = "/edit-profile";
 const CHANGE_PASSWORD = "/change-password";
+const ME = "/me"; // 추가한 이유는 userController에 userDetail에서 
+// 사용자마다 똑같은 user template을 사용할 텐데, 해당 id를 가진 사용자를
+// userDetail에서 찾도록하는게 싫어서 수정 -> me 컨트롤러 작성
 
 // Videos
 
@@ -24,6 +27,10 @@ const DELETE_VIDEO = "/:id/delete";
 const GITHUB = "/auth/github";
 const GITHUB_CALLBACK = "/auth/github/callback";
 
+// Facebook
+const FACEBOOK = "/auth/facebook";
+const FACEBOOK_CALLBACK = "/auth/facebook/callback";
+
 const routes = {
   home: HOME,
   join: JOIN,
@@ -33,6 +40,7 @@ const routes = {
   users: USERS,
   // userDetail: USER_DETAIL,
   userDetail: (id) => {
+    // console.log(id);
     if(id){
       return `/users/${id}`;
     }
@@ -68,7 +76,10 @@ const routes = {
     }
   },
   github: GITHUB,
-  githubCallback: GITHUB_CALLBACK
+  githubCallback: GITHUB_CALLBACK,
+  me: ME,
+  facebook: FACEBOOK,
+  facebookCallback: FACEBOOK_CALLBACK
 };
 
 export default routes;

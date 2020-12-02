@@ -19,7 +19,11 @@ const app = express();
 
 const CookieStore = MongoStore(session);
 
-app.use(helmet());
+app.use(helmet(
+    {
+        contentSecurityPolicy: false
+    }
+));
 app.set('view engine', "pug");
 app.use("/uploads", express.static("uploads")); // uploads에 있는 file을 전달하는 middleware
 app.use("/static", express.static("static")); 

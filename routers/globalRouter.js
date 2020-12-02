@@ -1,7 +1,16 @@
 import express from "express";
 import passport from "passport";
 import routes from "../routes";
-import { getJoin, getLogin, githubLogin, logout, postGithubLogIn, postJoin, postLogin } from "../controllers/userController";
+import { 
+    facebookLogin, 
+    getJoin, getLogin, 
+    getMe, githubLogin, 
+    logout, 
+    postFacebookLogin, 
+    postGithubLogIn, 
+    postJoin, 
+    postLogin 
+} from "../controllers/userController";
 import { home, search } from "../controllers/videoController";
 import { onlyPrivate, onlyPublic } from "../middlewares";
 
@@ -20,12 +29,23 @@ globalRouter.get(routes.home, home); // controller에서 가져오는 export con
 globalRouter.get(routes.search, search);
 globalRouter.get(routes.logout, onlyPrivate, logout);
 
+// github authentication
 globalRouter.get(routes.github, githubLogin);
-
 globalRouter.get(
     routes.githubCallback, 
     passport.authenticate('github', { failureRedirect: '/login' }), 
     postGithubLogIn
+);
+
+globalRouter.get(routes.me, getMe);
+
+
+// facebook authentication
+globalRouter.get(routes.facebook, facebookLogin); // facebook으로 join 시 사용자를 facebook으로 보냄
+globalRouter.get(
+    routes.facebookCallback, 
+    passport.authenticate('facebook', { failureRedirect: '/login' }),
+    postFacebookLogin
 );
 
 export default globalRouter;

@@ -47,11 +47,12 @@ export const githubLoginCallback = async (accessToken, refreshToken, profile, cb
     // console.log(accessToken, refreshToken, profile, cb);
     const { _json: {id, avatar_url, name, email} } = profile;
     try{
-        const user = await User.findOne({email});
-        console.log(user);
+        const user = await User.findOne({email}); // 받아온 profile로 db내에서 조회
+        // console.log(user);
         // console.log(email);
         if(user){ // github로 로그인하려고 하는 사람의 email이 기존에 존재하는 계정의 email과 같은게 있다면 사용자정보를 update함
             user.githubId = id;
+            user.avatarUrl = avatar_url;
             user.save();
             return cb(null, user); // error는 null로 없다고 하고, user object를 콜백함 
         } else { // 만약 없다면 새로 계정을 만듦 , if에서 return이므로 else는 없어도 됨
@@ -72,12 +73,71 @@ export const postGithubLogIn = (req, res) => {
     res.redirect(routes.home);
 }
 
+export const facebookLogin = passport.authenticate('facebook'); // facebook join을 누르면 facebook으로 보냄
+// 그다음 유저가 있는지 확인하고
+/**
+ * passport.use(new FacebookStrategy({
+    clientID: FACEBOOK_APP_ID,
+    clientSecret: FACEBOOK_APP_SECRET,
+    callbackURL: "http://localhost:3000/auth/facebook/callback"
+  },
+  function(accessToken, refreshToken, profile, cb) { // 여기에 들어가는 부분이 facebookLoginCallback
+    User.findOrCreate({ facebookId: profile.id }, function (err, user) {
+      return cb(err, user);
+    });
+  }
+)); 
+ */
+export const facebookLoginCallback = async (accessToken, refreshToken, profile, cb) => {
+    // console.log(accessToken, refreshToken, profile, cb);
+    const { _json: {id, name, email}} = profile;
+    try{
+        const user = await User.findOne({email});
+        // console.log(user);
+        // console.log(email);
+        if(user){ // github로 로그인하려고 하는 사람의 email이 기존에 존재하는 계정의 email과 같은게 있다면 사용자정보를 update함
+            user.facebookID = id;
+            user.save();
+            return cb(null, user); // error는 null로 없다고 하고, user object를 콜백함 
+        } else { // 만약 없다면 새로 계정을 만듦 , if에서 return이므로 else는 없어도 됨
+            const newUser = await User.create({
+                email,
+                name,
+                facebookId: id,
+                avatarUrl: `https://graph.facebook.com/${id}/picture?type=large` // avatarUrl이 없는 이유는 페이스북엔 graph API라는게 있음 // 사진 다운로드 됨
+            })
+            return cb(null, newUser);
+        }
+    } catch(error){
+        return cb(error);
+    }
+}
+// 마지막으로 인증 성공했을 때 redirect 해주는 것
+export const postFacebookLogin = (req, res) => {
+    res.redirect(routes.home);
+}
+
+
 export const logout = (req, res) => {
     // To Do : process log out
     req.logout(); // passport를 사용할 때, 이렇게만 하면 로그아웃이 됨 
     res.redirect(routes.home);
     // res.render("logout", {pageTitle:'Logout'}); // logout.pug는 삭제해도 됨
 }
-export const userDetail = (req, res) => res.render("userDetail", {pageTitle:'User Detail'});
+
+export const getMe = (req, res) => { // userDetail이 하는 것과 같은 일을 함
+    // userDetail과 다른점은 userDetail에선 사용자를 찾는 과정이 필요한데, 여기선 현재 로그인된 user를 전달함
+    res.render("userDetail", {pageTitle:'User Detail', user: req.user});
+}
+
+export const userDetail = async (req, res) => {
+    const { params: {id} }= req;
+    try{
+        const user = await User.findById(id);
+        res.render("userDetail", {pageTitle:'User Detail', user});
+    } catch(error) {
+        res.redirect(routes.home);
+    }
+}
 export const editProfile = (req, res) => res.render("editProfile", {pageTitle:'Edit Profile'});
 export const changePassword = (req, res) => res.render("changePassword", {pageTitle:'Change Password'});
