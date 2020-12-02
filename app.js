@@ -4,7 +4,9 @@ import helmet from "helmet";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import passport from "passport";
+import mongoose from "mongoose";
 import session from "express-session";
+import MongoStore from "connect-mongo";
 // import { userRouter } from "./routers/userRouter";
 import { localsMiddleware } from "./middlewares"; // 알파벳 순서로 정렬하는게 나중에 보기 편함 
 import routes from "./routes";
@@ -14,6 +16,8 @@ import globalRouter from "./routers/globalRouter";
 import "./passport";
 
 const app = express();
+
+const CookieStore = MongoStore(session);
 
 app.use(helmet());
 app.set('view engine', "pug");
@@ -27,7 +31,8 @@ app.use(
     session({
         secret: process.env.COOKIE_SECRET,
         resave: true,
-        saveUninitialized: false
+        saveUninitialized: false,
+        store: new CookieStore({mongooseConnection: mongoose.connection})
     })
 );  // passport가 스스로 쿠키를 들여다 봐서, 그 쿠키정보에 해당하는 사용자를 찾아줌
 app.use(passport.initialize()); // 위에서 실행된 cookieParser로 부터 쿠키가 쭉 여기까지 내려와서 passport는 초기화되고 

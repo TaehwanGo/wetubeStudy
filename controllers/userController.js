@@ -41,8 +41,40 @@ export const postLogin = passport.authenticate('local', { // 'local'은 strategy
     successRedirect: routes.home
 }); 
 
+export const githubLogin = passport.authenticate('github');
+
+export const githubLoginCallback = async (accessToken, refreshToken, profile, cb) => { // github에서 돌아 오면 실행
+    // console.log(accessToken, refreshToken, profile, cb);
+    const { _json: {id, avatar_url, name, email} } = profile;
+    try{
+        const user = await User.findOne({email});
+        console.log(user);
+        // console.log(email);
+        if(user){ // github로 로그인하려고 하는 사람의 email이 기존에 존재하는 계정의 email과 같은게 있다면 사용자정보를 update함
+            user.githubId = id;
+            user.save();
+            return cb(null, user); // error는 null로 없다고 하고, user object를 콜백함 
+        } else { // 만약 없다면 새로 계정을 만듦 , if에서 return이므로 else는 없어도 됨
+            const newUser = await User.create({
+                email,
+                name,
+                githubId: id,
+                avatarUrl: avatar_url
+            })
+            return cb(null, newUser);
+        }
+    } catch(error){
+        return cb(error);
+    }
+};
+
+export const postGithubLogIn = (req, res) => {
+    res.redirect(routes.home);
+}
+
 export const logout = (req, res) => {
     // To Do : process log out
+    req.logout(); // passport를 사용할 때, 이렇게만 하면 로그아웃이 됨 
     res.redirect(routes.home);
     // res.render("logout", {pageTitle:'Logout'}); // logout.pug는 삭제해도 됨
 }
