@@ -4,6 +4,11 @@ block content
     .user-profile
         .user-profile__header
             //- helmet()에 옵션 {contentSecurityPolicy: false} 추가 후 이미지 출력 잘 됨
-            img.avatar(src=user.avatarUrl)
-            //- p=user.avatarUrl
+            img.u-avatar(src=user.avatarUrl)
             h4.profile__username=user.name
+        if user.id === loggedUser.id
+            .user-profile__btns
+                a(href=`/users${routes.editProfile}`)
+                    button ✏️ Edit Profile
+                a(href=`/users${routes.changePassword}`)
+                    button 🔒 Change Password 
