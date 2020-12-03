@@ -17,8 +17,12 @@ export const home = async (req, res) => {
     }
 }
 
-export const getCreateMovie = (req, res) =>
-  res.render("create", { pageTitle: "Create" });
+export const getCreateMovie = (req, res) => {
+    // create.pug에 listener 추가 
+    // const title = document.querySelector(".js-input-submit");// 안됨
+    // title.disabled = true;
+    res.render("create", { pageTitle: "Create" });
+}
 
 export const postCreateMovie = async (req, res) => {
     // req.body에서 form으로 보내진 title, sysnopsis, genres 가져오기
