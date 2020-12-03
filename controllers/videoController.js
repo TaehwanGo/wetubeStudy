@@ -80,7 +80,7 @@ export const postEditVideo = async (req, res) => {
     } = req;
     try {
         // 변수에 저장하지 않는 이유는 업데이트하면 그걸로 끝이기 때문에 // 원래는 _id:id 이지만 mongoose가 해결할 거라 믿어서 id만 적음 // 그러나 mongoose는 그만큼 똑똑하지 못해서 _id:id로 적어 줘야 함
-        await Video.findOneAndUpdate({ _id:id }, {title, description}); // form의 default value 설정함
+        await Video.findOneAndUpdate({_id:id  }, {title, description}); // form의 default value 설정함
         res.redirect(routes.videoDetail(id)); // 내 생각 : `/videos/${id}` // 정답 : routes.videoDetail(id)
     } catch(error) {
         res.redirect(routes.home); // 매번 try-catch를 하지 않고 middleware를 만들어서 할 수도 있음 

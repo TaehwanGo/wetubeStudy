@@ -1,4 +1,5 @@
 import "./db";
+import "./models/Movie";
 import express from "express";
 import path from "path";
 import bodyParser from "body-parser";
@@ -12,8 +13,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(localsMiddleware);
 app.use("/", movieRouter);
 
-// setting server
-const PORT = 3000;
+// setting sever
+const PORT = 4000;
 const handleListening = () => console.log(`Listening on: http://localhost:${PORT}`);
 app.listen(PORT, handleListening); // 포트 4000번을 리슨
 

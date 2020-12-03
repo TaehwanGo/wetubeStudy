@@ -1,0 +1,12 @@
+extends templates/layout
+
+block content
+  h1=pageTitle
+  form(action="/create", method="post")
+    input.js-input-title(type="text", name="title", placeholder="Title", minlength="3")
+    input.js-input-year(type="text", name="year", placeholder="Year")
+    input.js-input-rating(type="text", name="rating", placeholder="Rating")
+    textarea.js-textarea-synopsis(name="synopsis", placeholder="Synopsis")
+    input.js-input-genres(type="text", name="genres", placeholder="Genres")
+    input.js-input-submit(type="submit", value="submit")
+  
