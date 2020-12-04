@@ -2,6 +2,7 @@ import multer from "multer";
 import routes from "./routes";
 
 const multerVideo = multer({dest: 'uploads/videos/'}); // dest : destination
+const multerAvatar = multer({dest: "uploads/avatars/"}); // 추천하는 방법은 아님, 원래는 아마존에 올려야 함
 
 export const localsMiddleware = (req, res, next) => {
     res.locals.siteName = "Wetube";
@@ -29,3 +30,4 @@ export const onlyPrivate = (req, res, next) => {
 
 export const uploadVideo = multerVideo.single("videoFile"); // single.("videoFile") : 하나의 파일만 업로드 가능하고
 // upload.pug에서 post로 전달되는 video file의 name의 key는 videoFile 이다.
+export const uploadAvatar = multerAvatar.single("avatar"); // 

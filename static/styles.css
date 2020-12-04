@@ -210,6 +210,10 @@ button,
 input[type="submit"] {
   cursor: pointer; }
 
+.social-login,
+a {
+  color: white; }
+
 .header {
   background-color: #ea232c;
   margin-bottom: 50px; }

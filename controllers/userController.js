@@ -139,5 +139,26 @@ export const userDetail = async (req, res) => {
         res.redirect(routes.home);
     }
 }
-export const getEditProfile = (req, res) => res.render("editProfile", {pageTitle:'Edit Profile'});
+export const getEditProfile = (req, res) => {
+    // locals로 loggedUser를 전역화 했으므로 모든 템플릿에서 접근 가능 
+    res.render("editProfile", {pageTitle:'Edit Profile'});
+}
+export const postEditProfile = async (req, res) => {
+    const {
+        body: {name, email},
+        file//: {path} // path는 multer가 file에 path라는 key값으로 경로값을 준 것 
+    } = req;
+    // console.log(req.body, req.file, req.user, "수정 전 req.body, req.file, req.user");
+    try {
+        const user = await User.findByIdAndUpdate({_id:req.user._id}, {
+            name,
+            email,
+            avatarUrl: file ? file.path : req.user.avatarUrl   // 만약 유저가 file을 추가하면 file.path, 없으면 req.user.avatarUrl
+        });
+        res.redirect(routes.me);
+    } catch (error) {
+        res.render("editProfile", {pageTitle: "Edit Profile"})
+    }
+}
+
 export const changePassword = (req, res) => res.render("changePassword", {pageTitle:'Change Password'});

@@ -3,9 +3,10 @@ import routes from "../routes";
 import {
     userDetail,
     changePassword,
-    getEditProfile
+    getEditProfile,
+    postEditProfile
   } from "../controllers/userController";
-import { onlyPrivate, onlyPublic } from "../middlewares";
+import { onlyPrivate, onlyPublic, uploadAvatar } from "../middlewares";
 
 const userRouter = express.Router();
 
@@ -15,6 +16,8 @@ const userRouter = express.Router();
 // userRouter.get("/password", (req, res) => res.send('user password')); // 이것들 export 한 다음에 해도 되는건가? 됨(변수하나라서)
 
 userRouter.get(routes.editProfile, onlyPrivate, getEditProfile);
+userRouter.post(routes.editProfile, onlyPrivate, uploadAvatar, postEditProfile); // uploadAvatar는 multer(middlewares.js)로 부터 옴
+
 userRouter.get(routes.changePassword, onlyPrivate, changePassword);
 userRouter.get(routes.userDetail(), userDetail);
 
