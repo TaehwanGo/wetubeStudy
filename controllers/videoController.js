@@ -39,7 +39,7 @@ export const postUpload = async (req, res) => { // object는 upload.pug페이지
     } = req;
     // To Do : Upload and save video
     // console.log(body, file); // file 이 undefined로 나옴 - 강의에선 multer로 인해 videos/에 파일 생성되면서 url이 찍혀야 함
-    console.log(req.user);
+    // console.log(req.user);
     const newVideo = await Video.create({
         fileUrl: path,
         title,
@@ -48,7 +48,7 @@ export const postUpload = async (req, res) => { // object는 upload.pug페이지
     });
     req.user.videos.push(newVideo.id);
     req.user.save(); // req.user에 넣어주면 save()를 해줘야 되는 구나
-    console.log(newVideo);
+    // console.log(newVideo);
     // res.render("upload", {pageTitle: "Upload"});
     res.redirect(routes.videoDetail(newVideo.id)); 
 }
@@ -60,7 +60,7 @@ export const videoDetail = async (req, res) => {
     } = req;
     try{
         const video = await Video.findById(id).populate("creator");
-        console.log(video);
+        // console.log(video);
         res.render("videoDetail", {pageTitle: video.title, video});
     } catch(error) {
         res.redirect(routes.home);
@@ -72,7 +72,11 @@ export const getEditVideo = async (req, res) => {
     } = req; // req object안에 params 변수안의 값을 id라는 변수로 받음 
     try{
         const video = await Video.findById(id); // db에서 id값이 일치하는 video object를 가져와서 video에 저장한 다음 진행
-        res.render("editVideo", {pageTitle: `Edit ${video.title}`, video}); // 위에서 가져온 video 객체 : video
+        if(video.creator !== req.user.id) {
+            throw Error(); // catch로 감 
+        } else {
+            res.render("editVideo", {pageTitle: `Edit ${video.title}`, video}); // 위에서 가져온 video 객체 : video
+        }
     } catch(error) {
         res.redirect(routes.home);
     }
@@ -96,9 +100,14 @@ export const deleteVideo = async (req, res) => {
         params: {id}
     } = req;
     try{
-        await Video.findOneAndRemove({_id:id});
+        const video = await Video.findById(id); // db에서 id값이 일치하는 video object를 가져와서 video에 저장한 다음 진행
+        if(video.creator !== req.user.id) {
+            throw Error(); // catch로 감 
+        } else {
+            await Video.findOneAndRemove({_id:id});
+        }
     } catch(error) {
-        console.log(error);
+        console.log(error); // 아직 error message는 가지고 있지 않음, 나중에 추가 할 예정 
     }
     res.redirect(routes.home); // try와 catch가 공통적으로 redirect home이라서 밖으로 뺌
 }
