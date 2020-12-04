@@ -39,11 +39,15 @@ export const postUpload = async (req, res) => { // object는 upload.pug페이지
     } = req;
     // To Do : Upload and save video
     // console.log(body, file); // file 이 undefined로 나옴 - 강의에선 multer로 인해 videos/에 파일 생성되면서 url이 찍혀야 함
+    console.log(req.user);
     const newVideo = await Video.create({
         fileUrl: path,
         title,
-        description
+        description,
+        creator: req.user.id
     });
+    req.user.videos.push(newVideo.id);
+    req.user.save(); // req.user에 넣어주면 save()를 해줘야 되는 구나
     console.log(newVideo);
     // res.render("upload", {pageTitle: "Upload"});
     res.redirect(routes.videoDetail(newVideo.id)); 
@@ -55,8 +59,8 @@ export const videoDetail = async (req, res) => {
         params: {id}
     } = req;
     try{
-        const video = await Video.findById(id);
-        // console.log(video);
+        const video = await Video.findById(id).populate("creator");
+        console.log(video);
         res.render("videoDetail", {pageTitle: video.title, video});
     } catch(error) {
         res.redirect(routes.home);

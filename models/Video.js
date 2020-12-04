@@ -21,7 +21,11 @@ const VideoSchema = new mongoose.Schema({
     comments: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Comment"
-    }]
+    }],
+    creator: {
+        type: mongoose.Schema.Types.ObjectId, // comments와 마찬가지로 creator가 있음
+        ref: "User"
+    }
 });
 
 // 위 스키마로 부터 model을 작성

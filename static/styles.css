@@ -210,7 +210,7 @@ button,
 input[type="submit"] {
   cursor: pointer; }
 
-.social-login,
+.social-login
 a {
   color: white; }
 

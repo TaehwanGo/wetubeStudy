@@ -157,8 +157,32 @@ export const postEditProfile = async (req, res) => {
         });
         res.redirect(routes.me);
     } catch (error) {
-        res.render("editProfile", {pageTitle: "Edit Profile"})
+        // res.render("editProfile", {pageTitle: "Edit Profile"})
+        res.redirect(routes.editProfile);
     }
 }
 
-export const changePassword = (req, res) => res.render("changePassword", {pageTitle:'Change Password'});
+export const getChangePassword = (req, res) => res.render("changePassword", {pageTitle:'Change Password'});
+
+export const postChangePassword = async (req, res) => {
+    const {
+        body:{
+            oldPassword,
+            newPassword,
+            newPassword1
+        }
+    } = req;
+    try {
+        if(newPassword !== newPassword1){
+            res.status(400); // google(크롬브라우저)은 패스워드라고 불리는 필드를 매번 찾아내기 때문에 자동저장을 시키지 않도록 하기위해
+            res.redirect(`/user${routes.changePassword}`);
+            return;
+        } else { // 
+            await req.user.changePassword(oldPassword, newPassword); // 우리 user는 이미 req.user에 있기 때문에 바로 호출 후 바꿀 수 있음
+            res.redirect(routes.me);
+        }
+    } catch (error) {
+        res.status(400);
+        res.redirect(`/user${routes.changePassword}`);
+    }
+}
