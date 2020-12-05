@@ -80,7 +80,7 @@ const formatDate = totalSeconds => {
     return `${hours}:${minutes}:${seconds}`;
 };
 
-function getCurrentTime() {
+function setCurrentTime() {
     currentTime.innerHTML = formatDate(Math.floor(videoPlayer.currentTime));
 }
   
@@ -97,7 +97,7 @@ function handleEnded() {
 
 function handleDrag(event) {
     const {
-    target: { value }
+        target: { value }
     } = event;
     videoPlayer.volume = value;
     if (value >= 0.6) {
@@ -117,7 +117,7 @@ function init(){
     volumeBtn.addEventListener("click", handleVolumeClick);
     fullScreenBtn.addEventListener("click", goFullScreen);
     videoPlayer.addEventListener("loadedmetadata", setTotalTime);
-    videoPlayer.addEventListener("timeupdate", getCurrentTime);
+    videoPlayer.addEventListener("timeupdate", setCurrentTime);
     videoPlayer.addEventListener("ended", handleEnded);
     volumeRange.addEventListener("input", handleDrag);
 }
