@@ -5,7 +5,8 @@ const videoPlayer = document.querySelector("#jsVideoPlayer video"); // 방법2 :
 const playBtn = document.getElementById("jsPlayButton");
 const volumeBtn = document.getElementById("jsVolumeButton");
 const fullScreenBtn = document.getElementById("jsFullScreen");
-
+const currentTime = document.getElementById("currentTime");
+const totalTime = document.getElementById("totalTime");
 
 
 function handlePlayClick(){
@@ -32,14 +33,59 @@ function handleVolumeClick() {
 function exitFullScreen() {
     fullScreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
     fullScreenBtn.addEventListener("click", goFullScreen);
-    document.exitFullscreen();
+    if (document.exitFullscreen) {
+        document.exitFullscreen();
+    } else if (document.mozCancelFullScreen) {
+        document.mozCancelFullScreen();
+    } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+    } else if (document.msExitFullscreen) {
+        document.msExitFullscreen();
+    }
 }
 
 function goFullScreen() {
     videoContainer.requestFullscreen(); // videoPlayer로 하는 것과 차이점 : 그래야 우리가 만든 컨트롤버튼들만 동작하게 할 수 있음
+    if (videoContainer.requestFullscreen) {
+        videoContainer.requestFullscreen();
+    } else if (videoContainer.mozRequestFullScreen) {
+        videoContainer.mozRequestFullScreen();
+    } else if (videoContainer.webkitRequestFullscreen) {
+        videoContainer.webkitRequestFullscreen();
+    } else if (videoContainer.msRequestFullscreen) {
+        videoContainer.msRequestFullscreen();
+    }
     fullScreenBtn.innerHTML = '<i class="fas fa-compress"></i>';
     fullScreenBtn.removeEventListener("click", goFullScreen);
     fullScreenBtn.addEventListener("click", exitFullScreen);
+}
+
+const formatDate = totalSeconds => {
+    const secondsNumber = parseInt(totalSeconds, 10);
+    let hours = Math.floor(secondsNumber / 3600);
+    let minutes = Math.floor((secondsNumber - hours * 3600) / 60);
+    let seconds = secondsNumber - hours * 3600 - minutes * 60;
+  
+    if (hours < 10) {
+      hours = `0${hours}`;
+    }
+    if (minutes < 10) {
+      minutes = `0${minutes}`;
+    }
+    if (seconds < 10) {
+        seconds = `0${seconds}`;
+    }
+    return `${hours}:${minutes}:${seconds}`;
+};
+
+function getCurrentTime() {
+    currentTime.innerHTML = formatDate(videoPlayer.currentTime);
+}
+  
+function setTotalTime() {
+    const totalTimeString = formatDate(videoPlayer.duration);
+    totalTime.innerHTML = totalTimeString;
+    setInterval(getCurrentTime, 1000);
 }
 
 function init(){
@@ -48,6 +94,7 @@ function init(){
     playBtn.addEventListener("click", handlePlayClick)
     volumeBtn.addEventListener("click", handleVolumeClick);
     fullScreenBtn.addEventListener("click", goFullScreen);
+    videoPlayer.addEventListener("loadedmetadata", setTotalTime);
 }
 
 if(videoContainer){
