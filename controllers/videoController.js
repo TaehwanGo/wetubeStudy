@@ -70,9 +70,11 @@ export const getEditVideo = async (req, res) => {
     const {
         params: {id}
     } = req; // req object안에 params 변수안의 값을 id라는 변수로 받음 
+    // console.log(req.user);
     try{
         const video = await Video.findById(id); // db에서 id값이 일치하는 video object를 가져와서 video에 저장한 다음 진행
-        if(video.creator !== req.user.id) {
+        // console.log(video);
+        if(video.creator != req.user.id) { // bug fix type unmatched, !== -> !=
             throw Error(); // catch로 감 
         } else {
             res.render("editVideo", {pageTitle: `Edit ${video.title}`, video}); // 위에서 가져온 video 객체 : video
@@ -101,7 +103,7 @@ export const deleteVideo = async (req, res) => {
     } = req;
     try{
         const video = await Video.findById(id); // db에서 id값이 일치하는 video object를 가져와서 video에 저장한 다음 진행
-        if(video.creator !== req.user.id) {
+        if(video.creator != req.user.id) {
             throw Error(); // catch로 감 
         } else {
             await Video.findOneAndRemove({_id:id});

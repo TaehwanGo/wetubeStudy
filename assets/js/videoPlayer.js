@@ -85,7 +85,7 @@ function getCurrentTime() {
 function setTotalTime() {
     const totalTimeString = formatDate(videoPlayer.duration);
     totalTime.innerHTML = totalTimeString;
-    setInterval(getCurrentTime, 1000);
+    // setInterval(getCurrentTime, 1000);
 }
 
 function init(){
@@ -95,6 +95,7 @@ function init(){
     volumeBtn.addEventListener("click", handleVolumeClick);
     fullScreenBtn.addEventListener("click", goFullScreen);
     videoPlayer.addEventListener("loadedmetadata", setTotalTime);
+    videoPlayer.addEventListener("timeupdate", getCurrentTime);
 }
 
 if(videoContainer){
