@@ -9,6 +9,13 @@ const currentTime = document.getElementById("currentTime");
 const totalTime = document.getElementById("totalTime");
 const volumeRange = document.getElementById("jsVolume");
 
+const registerView = () => {
+    const videoId = window.location.href.split("/videos/")[1];
+    fetch(`/api/${videoId}/view`, {
+        method: "POST"
+    }); // 조회수에 그렇게 신경쓰지 않을거라 await은 사용하지 않음
+}
+
 function handlePlayClick(){
     if(videoPlayer.paused){
         videoPlayer.play();
@@ -91,6 +98,7 @@ function setTotalTime() {
 }
 
 function handleEnded() {
+    registerView(); // 조회수 증가하는 함수
     videoPlayer.currentTime = 0;
     playBtn.innerHTML = '<i class="fas fa-play"></i>';
 }
