@@ -13,6 +13,8 @@ import routes from "./routes";
 import userRouter from "./routers/userRouter";
 import videoRouter from "./routers/videoRouter";
 import globalRouter from "./routers/globalRouter";
+import apiRouter from "./routers/apiRouter";
+
 import "./passport";
 
 const app = express();
@@ -48,5 +50,6 @@ app.use(localsMiddleware); // 이게 아래 라우터들 다음에 온다면 라
 app.use(routes.home, globalRouter);
 app.use(routes.users, userRouter); // 하나의 함수를 쓰는 대신 라우터를 쓰면 여러 route를 가질 수 있음 // get에서 use로 변경 // 만약 app.get 이라면? /user/edit 경로를 찾을 수 없음
 app.use(routes.videos, videoRouter);
+app.use(routes.api, apiRouter);
 
 export default app;

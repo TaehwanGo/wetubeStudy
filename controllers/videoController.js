@@ -115,3 +115,22 @@ export const deleteVideo = async (req, res) => {
     }
     res.redirect(routes.home); // try와 catch가 공통적으로 redirect home이라서 밖으로 뺌
 }
+
+// Register Video View
+export const postRegisterView = async (req, res) => { // render하는 것 없이 오직 서버와 통신함
+    const {
+        params: {id}
+    } = req;
+    // video를 찾을 거임
+    try {
+        // 비디오를 찾으면 view의 숫자를 올려줌 
+        const video = await Video.findById(id);
+        video.views += 1;
+        video.save();
+        res.status(200);
+    } catch (error) {
+        res.status(400);
+    } finally {
+        res.end(); // 요청을 끝냄
+    }
+}
