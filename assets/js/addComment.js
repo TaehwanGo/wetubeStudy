@@ -1,6 +1,21 @@
 import axios from "axios";
 
 const addCommentForm = document.getElementById("jsAddComment");
+const commentList = document.getElementById("jsCommentList");
+const commentNumber = document.getElementById("jsCommentNumber");
+
+const increaseNumber = () => {
+    commentNumber.innerHTML = parseInt(commentNumber.innerHTML, 10) + 1;
+}
+
+const addComment = (comment) => { // 댓글이 등록되면 새로고침 없이 댓글이 바로 등록되는 것처럼 보이게 하는 것
+    const li = document.createElement("li");
+    const span = document.createElement("span");
+    span.innerHTML = comment;
+    li.appendChild(span);
+    commentList.prepend(li); // 최신것이 맨앞으로 <-> append는 최신것이 맨뒤로
+    increaseNumber();
+}
 
 // api(comment를 db에 등록하는)로 보내주는 함수
 const sendComment = async (comment) => {
@@ -13,6 +28,10 @@ const sendComment = async (comment) => {
         }
     });
     console.log(response);
+    if(response.status === 200){
+        addComment(comment);
+
+    }
 }
 
 // 댓글 추가하는 함수
