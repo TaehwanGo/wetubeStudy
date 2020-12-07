@@ -107,6 +107,8 @@ export const deleteVideo = async (req, res) => {
             throw Error(); // catch로 감 
         } else {
             await Video.findOneAndRemove({_id:id});
+            // video collection에선 지우지만 user에 videos[]엔 남아 있음
+            
         }
     } catch(error) {
         console.log(error); // 아직 error message는 가지고 있지 않음, 나중에 추가 할 예정 

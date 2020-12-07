@@ -3,7 +3,7 @@ const autoprefixer = require("autoprefixer");
 // const ExtractCSS = require("extract-text-webpack-plugin");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-const MODE = process.env.WEBPACK_ENV; // WEBPACK_ENV // cross-env
+const MODE = process.env.WEBPACK_ENV; // WEBPACK_ENV // cross-env // .env가 아닌 package.json에서 가져옴 - 그래서 cross-env를 사용함
 const ENTRY_FILE = path.resolve(__dirname, "assets", "js", "main.js");
 const OUTPUT_DIR = path.join(__dirname, "static");
 

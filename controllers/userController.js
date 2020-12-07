@@ -125,9 +125,18 @@ export const logout = (req, res) => {
     // res.render("logout", {pageTitle:'Logout'}); // logout.pug는 삭제해도 됨
 }
 
-export const getMe = (req, res) => { // userDetail이 하는 것과 같은 일을 함
-    // userDetail과 다른점은 userDetail에선 사용자를 찾는 과정이 필요한데, 여기선 현재 로그인된 user를 전달함
-    res.render("userDetail", {pageTitle:'User Detail', user: req.user});
+export const getMe = async (req, res) => { // userDetail이 하는 것과 같은 일을 함
+    // 작성자의 영상이 안보이는 문제 있음
+    console.log(req.user); // undefined
+    // console.log(res.user); // undefined
+    // console.log(req);
+    try {
+        const user = await User.findById(req.user._id).populate("videos");
+        // userDetail과 다른점은 userDetail에선 사용자를 찾는 과정이 필요한데, 여기선 현재 로그인된 user를 전달함
+        res.render("userDetail", {pageTitle:'User Detail', user}); // user: req.user
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 export const userDetail = async (req, res) => {
