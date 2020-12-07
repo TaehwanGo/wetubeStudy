@@ -79,6 +79,6 @@ function init(){
     
 }
 
-if (jsRecordContainer) {
+if (recorderContainer) {
     init();
 }
