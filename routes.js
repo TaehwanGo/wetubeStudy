@@ -35,6 +35,7 @@ const FACEBOOK_CALLBACK = "/auth/facebook/callback";
 // 유저는 이 URL에 접근 할 수 없고, 이 URL은 어떤것도 렌더링하지 않음
 const API = "/api";
 const REGISTER_VIEW = "/:id/view";
+const ADD_COMMENT = "/:id/comment";
 
 const routes = {
   home: HOME,
@@ -86,7 +87,8 @@ const routes = {
   facebook: FACEBOOK,
   facebookCallback: FACEBOOK_CALLBACK,
   api: API,
-  registerView : REGISTER_VIEW
+  registerView : REGISTER_VIEW,
+  addComment: ADD_COMMENT
 };
 
 export default routes;

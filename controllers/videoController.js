@@ -1,6 +1,7 @@
 // import {videos} from "../db"; // 더 이상 controller에서 import하는게 아닌 init.js에서 import 해서 사용 할 것임
 import routes from "../routes"
 import Video from "../models/Video"; // 이건 단지 model 이고 dattabase의 element가 아님 
+import Comment from "../models/Comment";
 
 export const home = async (req, res) => { // async가 없다면 videos를 발견 못 하면 그냥 render 함
     try{ // 기다리긴 하지만 error가 발생한 경우도 success로 간주하여 render로 넘어가기 때문에 try catch를 적용 
@@ -59,7 +60,9 @@ export const videoDetail = async (req, res) => {
         params: {id}
     } = req;
     try{
-        const video = await Video.findById(id).populate("creator");
+        const video = await Video.findById(id)
+      .populate("creator")
+      .populate("comments"); // view에서 comments를 표시하기 위해 video를 넘기기 전에 comments object들을 db에서 가져와서 보충해줌 // RDBMS의 JOIN과 비슷
         // console.log(video);
         res.render("videoDetail", {pageTitle: video.title, video});
     } catch(error) {
@@ -134,3 +137,26 @@ export const postRegisterView = async (req, res) => { // render하는 것 없이
         res.end(); // 요청을 끝냄
     }
 }
+
+// Add Comment
+
+export const postAddComment = async (req, res) => {
+    const {
+      params: { id }, // post방식이지만 :id가 중간에 있으므로 가능
+      body: { comment },
+      user // session 이 주는 req.user
+    } = req;
+    try {
+      const video = await Video.findById(id); // 
+      const newComment = await Comment.create({
+        text: comment,
+        creator: user.id
+      });
+      video.comments.push(newComment.id);
+      video.save();
+    } catch (error) {
+      res.status(400);
+    } finally {
+      res.end();
+    }
+  };
