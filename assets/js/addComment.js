@@ -11,8 +11,11 @@ const increaseNumber = () => {
 const addComment = (comment) => { // 댓글이 등록되면 새로고침 없이 댓글이 바로 등록되는 것처럼 보이게 하는 것
     const li = document.createElement("li");
     const span = document.createElement("span");
+    // const delBtn = document.createElement("span"); // 실시간 삭제가 구현이 아직 안됨 ajax 공부먼저 해보자
+    // delBtn.innerHTML = '<i class="far fa-trash-alt"></i>';
     span.innerHTML = comment;
     li.appendChild(span);
+    // li.appendChild(delBtn);
     commentList.prepend(li); // 최신것이 맨앞으로 <-> append는 최신것이 맨뒤로
     increaseNumber();
 }
@@ -27,7 +30,7 @@ const sendComment = async (comment) => {
             comment
         }
     });
-    console.log(response);
+    // console.log(response);
     if(response.status === 200){
         addComment(comment);
 

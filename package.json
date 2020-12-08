@@ -37,7 +37,7 @@
     "sass-loader": "^10.1.0"
   },
   "scripts": {
-    "start": "nodemon --exec babel-node challenges/assignment11/index.js --delay 2",
+    "start": "nodemon --exec babel-node challenges/assignment14/index.js --delay 2",
     "start12": "nodemon --exec babel-node challenges/assignment12/index.js --delay 2",
     "dev:server": "nodemon --exec babel-node init.js --delay 2 --ignore '.scss' --ignore 'static'",
     "dev:assets": "cross-env WEBPACK_ENV=development webpack -w",
@@ -53,6 +53,7 @@
   },
   "homepage": "https://github.com/TaehwanGo/wetubeStudy#readme",
   "devDependencies": {
+    "@types/node": "^14.14.11",
     "autoprefixer": "^10.0.4",
     "eslint": "^7.14.0",
     "eslint-config-airbnb-base": "^14.2.1",

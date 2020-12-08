@@ -120,6 +120,10 @@ package-lock.json
 uploads
 static
 
-# challenges
+challenges
 
 Note
+
+test.js
+test.pug
+testController.js

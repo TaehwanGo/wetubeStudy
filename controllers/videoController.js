@@ -63,10 +63,12 @@ export const videoDetail = async (req, res) => {
         const video = await Video.findById(id)
       .populate("creator")
       .populate("comments"); // view에서 comments를 표시하기 위해 video를 넘기기 전에 comments object들을 db에서 가져와서 보충해줌 // RDBMS의 JOIN과 비슷
-        // console.log(video);
+        // console.log("videoDetail, video:", video); // comments 찍어보자 
+        // console.log("loggedUserId", req.user); // loggedUser는 템플릿에서만 사용가능한가보네
         res.render("videoDetail", {pageTitle: video.title, video});
     } catch(error) {
-        res.redirect(routes.home);
+        // res.redirect(routes.home);
+        console.log(error);
     }
 }
 export const getEditVideo = async (req, res) => {
@@ -159,4 +161,26 @@ export const postAddComment = async (req, res) => {
     } finally {
       res.end();
     }
-  };
+};
+
+// Delete comment
+export const postDeleteComment = async (req, res) => {
+    const {
+        body: {commentId, videoId}
+    } = req;
+    try {
+        // video에서 지우고 comment에서도 지워야 함
+        // const video = await Video.findById(videoId).comments.pull({_id:commentId}); // pointer로 가져오네
+        const video = await Video.updateOne({_id: videoId}, {$pull:{comments: {_id:commentId}}}); // pointer로 가져오네
+        console.log("video:", video);
+        
+        // video.save();
+        // comment에서도 지우기
+        await Comment.findByIdAndRemove(commentId);
+    } catch (error) {
+        console.log(error);
+        res.status(400);
+    } finally {
+        res.end();
+    }
+}

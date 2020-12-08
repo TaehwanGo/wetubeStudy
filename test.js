@@ -1,43 +1,65 @@
-// ** http server **
-const http = require('http')
+// 삭제 버튼 구현 
 
-// const port = process.env.PORT
-const port = 4000;
+// assets/js/deleteComment.js
+import axios from "axios";
 
-const server = http.createServer((req, res) => {
-  res.statusCode = 200
-  res.setHeader('Content-Type', 'text/html')
-  res.end('<h1>Hello, World!</h1>')
-})
+const delCommentForm = document.querySelector("#jsDeleteComment");
+const commentList = document.querySelector(".video__comments-list");
+const commentNumber = document.getElementById("jsCommentNumber");
 
-server.listen(port, () => {
-  console.log(`Server running at port ${port}`)
-})
-
-
-
-
-// ** Perform a GET Request **
-const https = require('http')
-const options = {
-  hostname: 'localhost',
-  port: 4000,
-  path: '/',
-  method: 'GET'
+const arrangeList = (listItem) => { // 댓글 삭제 시 개수 표시 하는 부분
+    // console.log(event.target.parentNode.parentNode.parentNode);
+    listItem.style.display = "none";
+    // event.target.parentNode.parentNode.parentNode.style.display = "none";
+    commentNumber.innerHTML = parseInt(commentNumber.innerHTML, 10) - 1;
 }
 
-const req = https.request(options, res => {
-  console.log(`statusCode: ${res.statusCode}`)
+export const deleteComment = async (deleteTargetOfListItem, deleteCommentId) => {
+    const videoId = window.location.href.split("/videos/")[1];
+    axios.post(`/api/${deleteCommentId}/comment/delete`, {
+        deleteCommentId,
+        videoId
+    }).then((response) => {
+        if (response.status === 200) {
+            console.log("Your comment has been deleted.");
+            arrangeList(deleteTargetOfListItem)
+        }
+    }).catch((error) => {
+        console.log(error.response)
+    })
+}
 
-  res.on('data', d => {
-    process.stdout.write(d)
-  })
-})
-console.log(req);
-req.on('error', error => {
-  console.error(error)
-})
+export const handleCommentId = (event) => {
+    // event.preventDefault();
+    // const commentId = event.target.querySelector(".commentID")["value"];
+    const deleteTargetOfListItem = event.target.parentNode.parentNode;
+    const deleteCommentId = event.target.id;
+    // console.log(deleteTargetOfListItem, deleteCommentId);
+    deleteComment(deleteTargetOfListItem, deleteCommentId)
+}
 
-req.end()
+export const initDelete = (deleteBtn) => {
+    // delCommentForm.addEventListener("submit", (event) => event.preventDefault());
+    // console.log(deleteBtn)
+    deleteBtn.forEach(btn => {
+        btn.addEventListener("click", handleCommentId)
+    })
+
+    console.log(deleteBtn);
+};
+
+
+
+
+
+
+
+
+// apiRouter.js
+apiRouter.post(routes.loadComments, postLoadComments); // 이건 뭔지 모르겠고
+apiRouter.post(routes.deleteComments, postDeleteComment);
+
+
+
 
 

@@ -34,6 +34,7 @@ const FACEBOOK_CALLBACK = "/auth/facebook/callback";
 // API URL : 단지 서버와 커뮤니케이션을 위한 URL
 // 유저는 이 URL에 접근 할 수 없고, 이 URL은 어떤것도 렌더링하지 않음
 const API = "/api";
+const DELETE_COMMENT = "/deleteComment";
 const REGISTER_VIEW = "/:id/view";
 const ADD_COMMENT = "/:id/comment";
 
@@ -88,7 +89,8 @@ const routes = {
   facebookCallback: FACEBOOK_CALLBACK,
   api: API,
   registerView : REGISTER_VIEW,
-  addComment: ADD_COMMENT
+  addComment: ADD_COMMENT,
+  deleteComment: DELETE_COMMENT
 };
 
 export default routes;
