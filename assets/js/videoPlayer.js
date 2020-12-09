@@ -1,3 +1,5 @@
+import getBlobDuration from "get-blob-duration";
+
 const videoContainer = document.getElementById("jsVideoPlayer");
 // let videoPlayer; // 방법1
 // 방법 2의 핵심은 독립적인 id를 가진 container가 반드시 필요함
@@ -91,10 +93,22 @@ function setCurrentTime() {
     currentTime.innerHTML = formatDate(Math.floor(videoPlayer.currentTime));
 }
   
-function setTotalTime() {
-    const totalTimeString = formatDate(videoPlayer.duration);
+async function setTotalTime() {
+    let totalTimeString;
+    console.log(videoPlayer.duration);
+    if(videoPlayer.duration !== Infinity){
+        totalTimeString = formatDate(videoPlayer.duration);
+    }
+    else {
+        const blob = await fetch(videoPlayer.src).then(response => response.blob()); // fetch는 http통신용인줄 알았는데
+        // videoPlayer.src를 받아서 그걸 서버에 요청해서 응답을 받으면 response.blob반환(blob는 파일)
+        const duration = await getBlobDuration(URL.createObjectURL(blob));
+        console.log(duration);
+        totalTimeString = formatDate(duration);
+    }
     totalTime.innerHTML = totalTimeString;
     // setInterval(getCurrentTime, 1000);
+    // 
 }
 
 function handleEnded() {

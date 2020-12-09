@@ -22,6 +22,7 @@
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
+    "get-blob-duration": "^1.1.2",
     "helmet": "^4.2.0",
     "mongoose": "^5.10.15",
     "morgan": "^1.10.0",
