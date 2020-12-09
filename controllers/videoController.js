@@ -2,7 +2,7 @@
 import routes from "../routes"
 import Video from "../models/Video"; // 이건 단지 model 이고 dattabase의 element가 아님 
 import Comment from "../models/Comment";
-import Axios from "axios";
+
 
 export const home = async (req, res) => { // async가 없다면 videos를 발견 못 하면 그냥 render 함
     try{ // 기다리긴 하지만 error가 발생한 경우도 success로 간주하여 render로 넘어가기 때문에 try catch를 적용 
@@ -37,13 +37,14 @@ export const getUpload = (req, res) => res.render("upload", {pageTitle:'Upload'}
 export const postUpload = async (req, res) => { // object는 upload.pug페이지로부터 post방식으로 전달된 req의 body에 존재함 
     const {
         body:{ title, description}, // 여기서 body는 존재하지 않고 file, title, description만 존재함
-        file: { path}
+        file: { location}
     } = req;
+    // console.log(req.file);
     // To Do : Upload and save video
     // console.log(body, file); // file 이 undefined로 나옴 - 강의에선 multer로 인해 videos/에 파일 생성되면서 url이 찍혀야 함
     // console.log(req.user);
     const newVideo = await Video.create({
-        fileUrl: path,
+        fileUrl: location,
         title,
         description,
         creator: req.user.id

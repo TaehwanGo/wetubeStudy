@@ -1,8 +1,34 @@
 import multer from "multer";
+import multerS3 from "multer-s3";
+import aws from "aws-sdk";
 import routes from "./routes";
 
-const multerVideo = multer({dest: 'uploads/videos/'}); // dest : destination
-const multerAvatar = multer({dest: "uploads/avatars/"}); // 추천하는 방법은 아님, 원래는 아마존에 올려야 함
+// initialize s3 user kinda things
+const s3 = new aws.S3({
+    accessKeyId:process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey:process.env. AWS_SECRET_ACCESS_KEY
+    // region 설정해줘야되는데 안해줘도 동작하고 있음
+});
+
+// const multerVideo = multer({dest: 'uploads/videos/'}); // dest : destination
+const multerVideo = multer({
+    storage: multerS3({
+        s3,
+        acl: "public-read",
+        bucket: "wetubetony/video"
+    })
+});
+// const multerAvatar = multer({dest: "uploads/avatars/"}); // 추천하는 방법은 아님, 원래는 아마존에 올려야 함
+const multerAvatar = multer({
+    storage: multerS3({
+        s3,
+        acl: "public-read",
+        bucket: "wetubetony/avatar"
+    })
+});
+
+export const uploadVideo = multerVideo.single("videoFile"); // single.("videoFile") : 하나의 파일만 업로드 가능하고 // upload.pug에서 post로 전달되는 video file의 name의 key는 videoFile 이다.
+export const uploadAvatar = multerAvatar.single("avatar"); // 
 
 export const localsMiddleware = (req, res, next) => {
     res.locals.siteName = "Wetube";
@@ -28,6 +54,3 @@ export const onlyPrivate = (req, res, next) => {
     }
 }
 
-export const uploadVideo = multerVideo.single("videoFile"); // single.("videoFile") : 하나의 파일만 업로드 가능하고
-// upload.pug에서 post로 전달되는 video file의 name의 key는 videoFile 이다.
-export const uploadAvatar = multerAvatar.single("avatar"); // 
