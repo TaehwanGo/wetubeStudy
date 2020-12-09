@@ -37,7 +37,5 @@ block content
                         span=comment.text 
                         //- span=`${loggedUser.id}, ${comment.creator}`
                         if loggedUser && (comment.creator == loggedUser.id)
-                            form#jsCommentDeleteButton
-                                //- input(type="hidden", name="commentId", value="comment._id")
-                                <i class="far fa-trash-alt"></i>
-                                input.comment-deleteBtn(type="submit", clickable=false, value="")
+                            <i id="jsCommentDeleteButton" class="far fa-trash-alt"></i>
+                            //- input.comment-deleteBtn(type="submit", clickable=false, value="")

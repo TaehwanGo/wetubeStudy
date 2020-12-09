@@ -2,6 +2,7 @@
 import routes from "../routes"
 import Video from "../models/Video"; // 이건 단지 model 이고 dattabase의 element가 아님 
 import Comment from "../models/Comment";
+import Axios from "axios";
 
 export const home = async (req, res) => { // async가 없다면 videos를 발견 못 하면 그냥 render 함
     try{ // 기다리긴 하지만 error가 발생한 경우도 success로 간주하여 render로 넘어가기 때문에 try catch를 적용 
@@ -156,6 +157,8 @@ export const postAddComment = async (req, res) => {
       });
       video.comments.push(newComment.id);
       video.save();
+    //   console.log(res);
+      res.send(newComment.id); // {commentId: newComment.id}; // 이걸 어떻게 넣어서 전달할 수 있을까?
     } catch (error) {
       res.status(400);
     } finally {

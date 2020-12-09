@@ -60,22 +60,8 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        form {
-          // cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          input {
-            background-color: #3498db;
-            color: white;
-            border: none;
-            opacity: 0;
-            z-index: 2;
-          }
-          i {
-            position: absolute;
-            z-index: 1;
-          }
+        i {
+          cursor: pointer;
         }
       }
     }
