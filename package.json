@@ -6,6 +6,7 @@
   "author": "Taehwan Go",
   "license": "ISC",
   "dependencies": {
+    "@babel/cli": "^7.12.10",
     "@babel/core": "^7.12.3",
     "@babel/node": "^7.12.6",
     "@babel/polyfill": "^7.12.1",
@@ -28,6 +29,7 @@
     "morgan": "^1.10.0",
     "multer": "^1.4.2",
     "multer-s3": "^2.9.0",
+    "node-fetch": "^2.6.1",
     "node-sass": "^5.0.0",
     "passport": "^0.4.1",
     "passport-facebook": "^3.0.0",
@@ -40,12 +42,16 @@
     "sass-loader": "^10.1.0"
   },
   "scripts": {
-    "start": "nodemon --exec babel-node challenges/assignment14/index.js --delay 2",
-    "start12": "nodemon --exec babel-node challenges/assignment12/index.js --delay 2",
-    "dev:server": "nodemon --exec babel-node init.js --delay 2 --ignore '.scss' --ignore 'static'",
-    "dev:assets": "cross-env WEBPACK_ENV=development webpack -w",
-    "build:assets": "cross-env WEBPACK_ENV=production webpack",
-    "tunnel": "lt --port 4000"
+    "assignment": "nodemon --exec babel-node challenges/assignment16/index.js --delay 2",
+    "dev:server": "nodemon --exec babel-node src\\init.js --delay 2 --ignore '.scss' --ignore 'static'",
+    "dev:assets": "cd src && cross-env WEBPACK_ENV=development webpack -w",
+    "build:assets": "cd src && cross-env WEBPACK_ENV=production webpack",
+    "build:server": "babel src --out-dir build --ignore 'src/assets','src/static','src/webpack.config.js'",
+    "copyAll": "xcopy /s src\\static build\\static && xcopy /s src\\views build\\views",
+    "build": "npm run build:server && npm run build:assets && npm run copyAll",
+    "prebuild": "rd /s \"build\"",
+    "tunnel": "lt --port 4000",
+    "start": "node build\\init.js"
   },
   "repository": {
     "type": "git",

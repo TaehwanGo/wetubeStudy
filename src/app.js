@@ -6,6 +6,7 @@ import bodyParser from "body-parser";
 import passport from "passport";
 import mongoose from "mongoose";
 import session from "express-session";
+import path from "path";
 import MongoStore from "connect-mongo";
 // import { userRouter } from "./routers/userRouter";
 import { localsMiddleware } from "./middlewares"; // 알파벳 순서로 정렬하는게 나중에 보기 편함 
@@ -27,8 +28,9 @@ app.use(helmet(
     }
 ));
 app.set('view engine', "pug");
-app.use("/uploads", express.static("uploads")); // uploads에 있는 file을 전달하는 middleware
-app.use("/static", express.static("static")); 
+app.set("views", path.join(__dirname, "views"))
+// app.use("/uploads", express.static("uploads")); // uploads에 있는 file을 전달하는 middleware // s3를 스토리지로 사용하면서 삭제
+app.use("/static", express.static(path.join(__dirname, "static"))); 
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
