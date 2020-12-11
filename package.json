@@ -40,17 +40,22 @@
     "postcss-cli": "^8.3.0",
     "postcss-loader": "^4.1.0",
     "pug": "^3.0.0",
-    "sass-loader": "^10.1.0"
+    "sass-loader": "^10.1.0",
+    "webpack": "^5.8.0",
+    "webpack-cli": "^4.2.0",
+    "postcss": "^8.1.10",
+    "mini-css-extract-plugin": "^1.3.1",
+    "autoprefixer": "^10.0.4"
   },
   "scripts": {
     "assignment": "nodemon --exec babel-node challenges/assignment16/index.js --delay 2",
     "dev:server": "nodemon --exec babel-node src\\init.js --delay 2 --ignore '.scss' --ignore 'static'",
     "dev:assets": "cd src && cross-env WEBPACK_ENV=development webpack -w",
-    "build:assets": "cd src && cross-env WEBPACK_ENV=production webpack",
+    "build:assets": "cd src && WEBPACK_ENV=production webpack",
     "build:server": "babel src --out-dir build --ignore 'src/assets','src/static','src/webpack.config.js'",
-    "copyAll": "xcopy /s src\\static build\\static && xcopy /s src\\views build\\views",
+    "copyAll": "cp -R src/static build && cp -R src/views build",
     "build": "npm run build:server && npm run build:assets && npm run copyAll",
-    "prebuild": "rd /s \"build\"",
+    "prebuild": "rm -rf build",
     "tunnel": "lt --port 4000",
     "start": "node build\\init.js"
   },
@@ -64,18 +69,13 @@
   "homepage": "https://github.com/TaehwanGo/wetubeStudy#readme",
   "devDependencies": {
     "@types/node": "^14.14.11",
-    "autoprefixer": "^10.0.4",
     "eslint": "^7.14.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-prettier": "^6.15.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-prettier": "^3.1.4",
-    "mini-css-extract-plugin": "^1.3.1",
     "nodemon": "^2.0.6",
-    "postcss": "^8.1.10",
-    "prettier": "^2.2.0",
-    "webpack": "^5.8.0",
-    "webpack-cli": "^4.2.0"
+    "prettier": "^2.2.0"
   },
   "browserslist": [
     "defaults"
