@@ -13,6 +13,7 @@ export const postJoin = async (req, res, next) => { // /join에 post 방식에 �
     // console.log(req.body); // 회원정보 
     if(password !== password2){
         // send wrong status code
+        req.flash('error', "Passwords don't match");
         res.status(400);
         res.render("join", {pageTitle: "Join"});
     }
@@ -38,10 +39,15 @@ export const getLogin = (req, res) =>
 // passport 인증 방식은 username(여기선 email)과 password를 찾아보도록 설정되어 있음 
 export const postLogin = passport.authenticate('local', { // 'local'은 strategy 중 하나임(ex github or facebook or email)
     failureRedirect: routes.login,
-    successRedirect: routes.home
+    successRedirect: routes.home,
+    successFlash: "Welcome", // 자동적으로 flash library에 의해 messages.success에 "Welcome" 이 저장됨
+    failureFlash: "Can't log in. Check email and/or password"
 }); 
 
-export const githubLogin = passport.authenticate('github');
+export const githubLogin = passport.authenticate('github', {
+    successFlash: "Welcome", // 자동적으로 flash library에 의해 messages.success에 "Welcome" 이 저장됨
+    failureFlash: "Can't log in. Check email and/or password"
+});
 
 export const githubLoginCallback = async (accessToken, refreshToken, profile, cb) => { // github에서 돌아 오면 실행
     // console.log(accessToken, refreshToken, profile, cb);
@@ -73,7 +79,10 @@ export const postGithubLogIn = (req, res) => {
     res.redirect(routes.home);
 }
 
-export const facebookLogin = passport.authenticate('facebook'); // facebook join을 누르면 facebook으로 보냄
+export const facebookLogin = passport.authenticate('facebook', {
+    successFlash: "Welcome", // 자동적으로 flash library에 의해 messages.success에 "Welcome" 이 저장됨
+    failureFlash: "Can't log in. Check email and/or password"
+}); // facebook join을 누르면 facebook으로 보냄
 // 그다음 유저가 있는지 확인하고
 /**
  * passport.use(new FacebookStrategy({
@@ -119,6 +128,7 @@ export const postFacebookLogin = (req, res) => {
 
 
 export const logout = (req, res) => {
+    req.flash('info', "Logged out, see you later");
     // To Do : process log out
     req.logout(); // passport를 사용할 때, 이렇게만 하면 로그아웃이 됨 
     res.redirect(routes.home);
@@ -146,6 +156,7 @@ export const userDetail = async (req, res) => {
         console.log(user); // ing
         res.render("userDetail", {pageTitle:'User Detail', user});
     } catch(error) {
+        req.flash('error', 'User not found');
         res.redirect(routes.home);
     }
 }
@@ -165,8 +176,10 @@ export const postEditProfile = async (req, res) => {
             email,
             avatarUrl: file ? file.location : req.user.avatarUrl   // 만약 유저가 file을 추가하면 file.path, 없으면 req.user.avatarUrl
         });
+        req.flash('success', "Profile updated");
         res.redirect(routes.me);
     } catch (error) {
+        req.flash("error", "Can't update profile");
         // res.render("editProfile", {pageTitle: "Edit Profile"})
         res.redirect(routes.editProfile);
     }
@@ -184,6 +197,7 @@ export const postChangePassword = async (req, res) => {
     } = req;
     try {
         if(newPassword !== newPassword1){
+            req.flash('error', "Passwords don't match");
             res.status(400); // google(크롬브라우저)은 패스워드라고 불리는 필드를 매번 찾아내기 때문에 자동저장을 시키지 않도록 하기위해
             res.redirect(`/user${routes.changePassword}`);
             return;
@@ -192,6 +206,7 @@ export const postChangePassword = async (req, res) => {
             res.redirect(routes.me);
         }
     } catch (error) {
+        req.flash('error', "Can't change password");
         res.status(400);
         res.redirect(`/user${routes.changePassword}`);
     }

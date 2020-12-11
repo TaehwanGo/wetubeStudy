@@ -44,6 +44,7 @@ app.use(
         store: new CookieStore({mongooseConnection: mongoose.connection})
     })
 );  // passport가 스스로 쿠키를 들여다 봐서, 그 쿠키정보에 해당하는 사용자를 찾아줌
+app.use(flash()); // flash message 활성화
 app.use(passport.initialize()); // 위에서 실행된 cookieParser로 부터 쿠키가 쭉 여기까지 내려와서 passport는 초기화되고 
 app.use(passport.session());
 

@@ -49,7 +49,7 @@
   },
   "scripts": {
     "assignment": "nodemon --exec babel-node challenges/assignment16/index.js --delay 2",
-    "dev:server": "nodemon --exec babel-node src\\init.js --delay 2 --ignore '.scss' --ignore 'static'",
+    "dev:server": "nodemon --exec babel-node src/init.js --delay 2 --ignore '.scss' --ignore 'static'",
     "dev:assets": "cd src && cross-env WEBPACK_ENV=development webpack -w",
     "build:assets": "cd src && WEBPACK_ENV=production webpack",
     "build:server": "babel src --out-dir build --ignore 'src/assets','src/static','src/webpack.config.js'",
@@ -57,7 +57,7 @@
     "build": "npm run build:server && npm run build:assets && npm run copyAll",
     "prebuild": "rm -rf build",
     "tunnel": "lt --port 4000",
-    "start": "node build\\init.js"
+    "start": "PRODUCTION=true node build/init.js"
   },
   "repository": {
     "type": "git",

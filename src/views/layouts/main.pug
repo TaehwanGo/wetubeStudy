@@ -7,6 +7,12 @@ html
         link(rel="stylesheet", href="/static/styles.css")
         script(defer src="/static/main.js")
     body
+        if messages.error
+            span=messages.error
+        else if messages.info
+            span=messages.info
+        else if messages.success
+            span=messages.success
         //- header
         //-     h1 Wetube
         include ../partials/header
