@@ -7,6 +7,7 @@ import passport from "passport";
 import mongoose from "mongoose";
 import session from "express-session";
 import path from "path";
+import flash from "express-flash";
 import MongoStore from "connect-mongo";
 // import { userRouter } from "./routers/userRouter";
 import { localsMiddleware } from "./middlewares"; // 알파벳 순서로 정렬하는게 나중에 보기 편함 
