@@ -1,3 +1,5 @@
+include ../mixins/message
+
 doctype html
 html
     head
@@ -7,12 +9,22 @@ html
         link(rel="stylesheet", href="/static/styles.css")
         script(defer src="/static/main.js")
     body
+        //- span=JSON.stringify(messages)
         if messages.error
-            span=messages.error
+            +message({
+                type:'error',
+                text:messages.error
+            })
         else if messages.info
-            span=messages.info
+            +message({
+                type:'info',
+                text:messages.info
+            })
         else if messages.success
-            span=messages.success
+            +message({
+                type:'success',
+                text:messages.success
+            })
         //- header
         //-     h1 Wetube
         include ../partials/header
