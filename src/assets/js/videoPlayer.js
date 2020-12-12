@@ -95,7 +95,7 @@ function setCurrentTime() {
   
 async function setTotalTime() {
     let totalTimeString;
-    console.log(videoPlayer.duration);
+    // console.log(videoPlayer.duration);
     if(videoPlayer.duration !== Infinity){
         totalTimeString = formatDate(videoPlayer.duration);
     }

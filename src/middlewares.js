@@ -4,10 +4,10 @@ import aws from "aws-sdk";
 import routes from "./routes";
 
 // initialize s3 user kinda things
-const s3 = new aws.S3({
+export const s3 = new aws.S3({
     accessKeyId:process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey:process.env. AWS_SECRET_ACCESS_KEY
-    // region 설정해줘야되는데 안해줘도 동작하고 있음
+    secretAccessKey:process.env. AWS_SECRET_ACCESS_KEY,
+    region: "ap-northeast-2"
 });
 
 // const multerVideo = multer({dest: 'uploads/videos/'}); // dest : destination

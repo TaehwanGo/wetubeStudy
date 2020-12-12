@@ -1,6 +1,7 @@
 import passport from "passport";
 import routes from "../routes";
 import User from "../models/User";
+import { s3 } from "../middlewares";
 
 export const getJoin = (req, res) => { // /join에 get 방식에 해당하는 컨트롤러
     res.render("join", {pageTitle:'Join'});
@@ -153,7 +154,7 @@ export const userDetail = async (req, res) => {
     const { params: {id} }= req;
     try{
         const user = await User.findById(id).populate("videos");
-        console.log(user); // ing
+        // console.log(user); 
         res.render("userDetail", {pageTitle:'User Detail', user});
     } catch(error) {
         req.flash('error', 'User not found');
@@ -171,6 +172,24 @@ export const postEditProfile = async (req, res) => {
     } = req;
     // console.log(req.body, req.file, req.user, "수정 전 req.body, req.file, req.user");
     try {
+        // console.log("before:", req.user.avatarUrl); // 기존 url확인
+        // console.log("after:",file.location); // 변경될 url 확인
+        // S3에 올라간 변경전 사진을 삭제해야 됨
+        if(req.user.avatarUrl){ // 처음 회원가입하면 사진이 s3에 없으므로
+            const regex = /(http[s]?:\/\/)?([^\/\s]+\/)(.*)/;
+            const filePath = await req.user.avatarUrl.match(regex)[3];
+            // console.log(filePath);
+            const delFile = {
+                Bucket: "wetubetony",
+                // filePath는 이전에 정규식을 통해 잘라낸 버킷내 'dir/key'
+                Key: filePath,
+            };
+            await s3.deleteObject(delFile, function (err, data) {
+                if (err) console.log(err);
+                else console.log("The avatar file has been removed");
+            }).promise();
+        }
+
         const user = await User.findByIdAndUpdate({_id:req.user._id}, {
             name,
             email,
@@ -181,7 +200,8 @@ export const postEditProfile = async (req, res) => {
     } catch (error) {
         req.flash("error", "Can't update profile");
         // res.render("editProfile", {pageTitle: "Edit Profile"})
-        res.redirect(routes.editProfile);
+        // res.redirect(routes.editProfile);
+        console.log(error);
     }
 }
 

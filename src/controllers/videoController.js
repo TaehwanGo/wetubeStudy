@@ -1,7 +1,9 @@
 // import {videos} from "../db"; // 더 이상 controller에서 import하는게 아닌 init.js에서 import 해서 사용 할 것임
 import routes from "../routes"
 import Video from "../models/Video"; // 이건 단지 model 이고 dattabase의 element가 아님 
+import User from "../models/User";
 import Comment from "../models/Comment";
+import { s3 } from "../middlewares";
 
 
 export const home = async (req, res) => { // async가 없다면 videos를 발견 못 하면 그냥 render 함
@@ -110,12 +112,33 @@ export const deleteVideo = async (req, res) => {
     } = req;
     try{
         const video = await Video.findById(id); // db에서 id값이 일치하는 video object를 가져와서 video에 저장한 다음 진행
+        // AWS S3에서 삭제
+        const regex = /(http[s]?:\/\/)?([^\/\s]+\/)(.*)/;
+        const filePath = await video.fileUrl.match(regex)[3];
+        const delFile = {
+            Bucket: "wetubetony",
+            // filePath는 이전에 정규식을 통해 잘라낸 변수임을 명심하세요!
+            Key: filePath,
+        };
+        await s3.deleteObject(delFile, function (err, data) {
+            if (err) console.log(err);
+            else console.log("The file has been removed");
+        }).promise();
+
         if(video.creator != req.user.id) {
             throw Error(); // catch로 감 
         } else {
             await Video.findOneAndRemove({_id:id});
-            // video collection에선 지우지만 user에 videos[]엔 남아 있음
             
+            // video collection에선 지우고 user collection에 videos[]에 있는 목록에서도 지움
+            const filteredVideos = req.user.videos;
+            console.log("before videos:", filteredVideos);
+            const idx = filteredVideos.indexOf(id);
+            if (idx > -1) filteredVideos.splice(idx, 1);
+            console.log("after videos:", filteredVideos);
+
+            const creatorId = video.creator;
+            await User.findOneAndUpdate({_id:creatorId}, {videos:filteredVideos}); // 
         }
     } catch(error) {
         console.log(error); // 아직 error message는 가지고 있지 않음, 나중에 추가 할 예정 
