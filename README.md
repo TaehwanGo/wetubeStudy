@@ -16,4 +16,4 @@ Cloning Youtube with Vanilla and NodeJS
 - [x] Edit Video
 
 Deploy this project
-https://wetube-tony.herokuapp.com/
+https://wetube-tony-gh.herokuapp.com/
