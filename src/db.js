@@ -56,7 +56,7 @@ dotenv.config(); // 이 함수로 dotenv에 있는 모든 정보를 불러 올 �
 
 // string으로 된 Database, 어디에 database가 저장되어 있는지 알려 주는 것
 mongoose.connect(
-    process.env.MONGO_URL,
+    process.env.PRODUCTION ? process.env.MONGO_URL : process.env.MONGO_URL_LOCAL,
     {
         useNewUrlParser:true, // 새로운 버전의 Mongoose는 이런식으로 configuration을 보낼 수 있음 
         useFindAndModify:false // 이것들은 내가 MongoDB를 사용할때마다 이러한 configuration을 사용하거나 사용하지 않는 것을 알려줌(확실하게 하기 위해서)

@@ -11,7 +11,8 @@ passport.use(User.createStrategy()); // strategy: 로그인 하는 방법
 passport.use(new GithubStrategy({
     clientID: process.env.GH_ID,
     clientSecret: process.env.GH_SECRET,
-    callbackURL: `http://localhost:4000${routes.githubCallback}`
+    // callbackURL: `http://localhost:4000${routes.githubCallback}`
+    callbackURL: process.env.PRODUCTION ? `https://wetube-tony-gh.herokuapp.com${routes.githubCallback}` : `http://localhost:4000${routes.githubCallback}`
   },
   githubLoginCallback
 ));
@@ -19,7 +20,7 @@ passport.use(new GithubStrategy({
 passport.use(new FacebookStrategy({
   clientID: process.env.FB_ID,
   clientSecret: process.env.FB_SECRET,
-  callbackURL: `http://localhost:4000${routes.facebookCallback}`
+  callbackURL: process.env.PRODUCTION ? `https://wetube-tony-gh.herokuapp.com${routes.facebookCallback}` : `http://localhost:4000${routes.facebookCallback}`
 },
 facebookLoginCallback
 ));
