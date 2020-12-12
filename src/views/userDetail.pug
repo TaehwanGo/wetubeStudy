@@ -5,7 +5,10 @@ block content
     .user-profile
         .user-profile__header
             //- helmet()에 옵션 {contentSecurityPolicy: false} 추가 후 이미지 출력 잘 됨
-            img.u-avatar(src=`${user.avatarUrl}`)
+            if user.avatarUrl
+                img.u-avatar(src=`${user.avatarUrl}`)
+            else
+                <i class="fas fa-user"></i>
             h4.profile__username=user.name
         if loggedUser && user.id === loggedUser.id
             .user-profile__btns

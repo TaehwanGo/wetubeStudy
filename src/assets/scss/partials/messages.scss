@@ -2,7 +2,7 @@
     0% {
         transform: translateY(-70px);
     }
-    5% {
+    10% {
         transform: translateY(0px);
     }
     90%{
@@ -21,7 +21,7 @@
     z-index: 9;
     padding: 20px;
     text-align: center;
-    animation: flashAnimation 3s ease-in-out forwards;
+    animation: flashAnimation 1.5s ease-in-out forwards;
     &.error{
         background-color: #e67e22;
     }
