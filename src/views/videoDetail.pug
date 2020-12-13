@@ -30,11 +30,15 @@ block content
                     span#jsCommentNumber=video.comments.length
                     | comments 
             form.add__comment#jsAddComment
-                input(type="text", placeholder="Add a comment")
+                input#jsInputComment(type="text", placeholder="Add a comment")
             ul.video__comments-list#jsCommentList
                 each comment in video.comments.reverse()
                     li(id=`${comment.id}`)
-                        span=comment.text 
+                        .comment-contents
+                            .comment-userInfo
+                                img(src=comment.avatarUrl, alt="avatarUrl")
+                                span=comment.name
+                            span=comment.text
                         //- span=`${loggedUser.id}, ${comment.creator}`
                         if loggedUser && (comment.creator == loggedUser.id)
                             <i id="jsCommentDeleteButton" class="far fa-trash-alt"></i>

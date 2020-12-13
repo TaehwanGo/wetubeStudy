@@ -33,6 +33,7 @@
       }
     }
     .video__comments {
+      width: 70vh;
       margin-top: 25px;
       text-align: center;
       .video__comment-number {
@@ -42,16 +43,16 @@
         margin-top: 25px;
         width: 100%;
         input {
-          width: 100%;
+          max-width: 98%;
         }
       }
     }
     .video__comments-list {
-      margin-top: 50px;
+      margin-top: 35px;
       li {
-        background-color: #3498db;
-        color: white;
-        padding: 15px;
+        background-color: #ecf0f1; // #3498db;
+        color: black;
+        padding: 10px 15px;
         border-radius: 20px;
         border-bottom-left-radius: 0px;
         &:not(:last-child) {
@@ -60,6 +61,28 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        .comment-contents {
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          .comment-userInfo {
+            margin-right: 4vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            img {
+              width: 30px;
+              height: 30px;
+              border-radius: 50%;
+            }
+            span {
+              margin-top: 5px;
+              padding: 3px 5px;
+              background-color: white;
+              border-radius: 7px;
+            }
+          }
+        }
         i {
           cursor: pointer;
         }

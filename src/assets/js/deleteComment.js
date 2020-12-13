@@ -80,12 +80,13 @@ export function initDelete(ulFromAddComment) {
     // commentDeleteBtn.addEventListener("click", handleDeleteClick); // 이렇게 하면 제일 위에 하나밖에 안붙음
     // object형태로 가져와야 됨 // 그래야 for문을 돌려서 event리스너를 달 수 있음
     // const ulArray = commentList.getElementsByTagName('li'); // ul 태그
-    // console.log(ulArray);
+    
     
     if(ulFromAddComment){
-        ulArray = ulFromAddComment.getElementsByTagName('li');
+        ulArray = ulFromAddComment.getElementsByTagName('li'); // 이게 왜 배열로 적용이 안되어 있지
         console.log("ulArray = pointer실행");
     }
+    console.log(ulArray);
 
     for(let i = 0; i<ulArray.length; i++){ // 이벤트 리스너 추가
         // console.log("for:",i, ulArray[i].children[1]);

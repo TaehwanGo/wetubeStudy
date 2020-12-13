@@ -2,6 +2,7 @@ import passport from "passport";
 import routes from "../routes";
 import User from "../models/User";
 import { s3 } from "../middlewares";
+import { restart } from "nodemon";
 
 export const getJoin = (req, res) => { // /join에 get 방식에 해당하는 컨트롤러
     res.render("join", {pageTitle:'Join'});
@@ -36,6 +37,28 @@ export const postJoin = async (req, res, next) => { // /join에 post 방식에 �
 }
 export const getLogin = (req, res) => 
     res.render("login", {pageTitle:'Login'});
+
+// export const postLogin = (req, res, next) => 
+//     passport.authenticate('local', function(err, user, info) {
+//         // failureRedirect: routes.login,
+//         if (err) { return next(err); }
+//         if (!user) { return res.redirect(routes.login); }
+//         req.logIn(user, function(err) {
+//             // req.flash('success', {type: 'Welcome'}); // 이건 나중에 생각하자 flash message
+//             const redirURL = req.session.returnTo;
+//             console.log("del전redirURL:",redirURL);
+//             delete req.session.returnTo;
+//             console.log("del후redirURL:",redirURL);
+
+//             req.session.save(function (err) { // 세션에서 리다이렉션 URL 초기화
+//                 if(err) return next(err);
+//                 res.redirect(redirURL);  // 왔던곳으로 !!!
+//             });
+
+//             if (err) { return next(err); }
+//         });
+//     }
+// ); 
 
 // passport 인증 방식은 username(여기선 email)과 password를 찾아보도록 설정되어 있음 
 export const postLogin = passport.authenticate('local', { // 'local'은 strategy 중 하나임(ex github or facebook or email)
@@ -230,4 +253,18 @@ export const postChangePassword = async (req, res) => {
         res.status(400);
         res.redirect(`/user${routes.changePassword}`);
     }
+}
+
+export const checkLogin = (req, res) => {
+    const {
+        user // session 이 주는 req.user
+    } = req;
+
+    // console.log("checkLogin() req.user:",user);
+    if(user){
+        res.send('login');
+    } else {
+        res.send('logout');
+    }
+    res.end();
 }

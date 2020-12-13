@@ -12,7 +12,12 @@ const CommentSchema = new mongoose.Schema({
     creator: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User"
-    }
+    },
+    name: {
+        type: String,
+        default: "default name"
+    },
+    avatarUrl: String
     // ,
     // video: {
     //     type: mongoose.Schema.Types.ObjectId,

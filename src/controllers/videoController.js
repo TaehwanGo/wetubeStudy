@@ -69,6 +69,7 @@ export const videoDetail = async (req, res) => {
       .populate("comments"); // view에서 comments를 표시하기 위해 video를 넘기기 전에 comments object들을 db에서 가져와서 보충해줌 // RDBMS의 JOIN과 비슷
         // console.log("videoDetail, video:", video); // comments 찍어보자 
         // console.log("loggedUserId", req.user); // loggedUser는 템플릿에서만 사용가능한가보네
+        // console.log(video);
         res.render("videoDetail", {pageTitle: video.title, video});
     } catch(error) {
         // res.redirect(routes.home);
@@ -177,12 +178,15 @@ export const postAddComment = async (req, res) => {
       const video = await Video.findById(id); // 
       const newComment = await Comment.create({
         text: comment,
-        creator: user.id
+        creator: user.id,
+        name: user.name,
+        avatarUrl: user.avatarUrl 
       });
       video.comments.push(newComment.id);
       video.save();
-    //   console.log(res);
-      res.send(newComment.id); // {commentId: newComment.id}; // 이걸 어떻게 넣어서 전달할 수 있을까?
+
+      console.log("newComment:",newComment);
+      res.json(newComment); // {commentId: newComment.id}; // 이걸 어떻게 넣어서 전달할 수 있을까?
     } catch (error) {
       res.status(400);
     } finally {
