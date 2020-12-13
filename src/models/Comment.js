@@ -17,7 +17,10 @@ const CommentSchema = new mongoose.Schema({
         type: String,
         default: "default name"
     },
-    avatarUrl: String
+    avatarUrl: {
+        type: String,
+        default: "https://www.sibberhuuske.nl/wp-content/uploads/2016/10/default-avatar.png"
+    }
     // ,
     // video: {
     //     type: mongoose.Schema.Types.ObjectId,

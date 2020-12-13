@@ -6,7 +6,10 @@ const UserSchema = new mongoose.Schema({
     name: String,
     email: String,
     // password: String, // User.create으로 만들면 password가 암호화가 안됨 
-    avatarUrl: String, // fileUrl과 같은 방식으로 동작, 서버에 업로드를 한다면 서버url이 될 수도 있음
+    avatarUrl: { // fileUrl과 같은 방식으로 동작, 서버에 업로드를 한다면 서버url이 될 수도 있음
+        type: String,
+        default: "https://www.sibberhuuske.nl/wp-content/uploads/2016/10/default-avatar.png"
+    }, 
     facebookId: Number,
     githubId: Number, // social ID는 왜 Number 일까? 
     comments: [{
