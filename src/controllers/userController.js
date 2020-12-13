@@ -2,7 +2,6 @@ import passport from "passport";
 import routes from "../routes";
 import User from "../models/User";
 import { s3 } from "../middlewares";
-import { restart } from "nodemon";
 
 export const getJoin = (req, res) => { // /join에 get 방식에 해당하는 컨트롤러
     res.render("join", {pageTitle:'Join'});
