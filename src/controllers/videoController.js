@@ -185,7 +185,7 @@ export const postAddComment = async (req, res) => {
       video.comments.push(newComment.id);
       video.save();
 
-      console.log("newComment:",newComment);
+    //   console.log("newComment:",newComment);
       res.json(newComment); // {commentId: newComment.id}; // 이걸 어떻게 넣어서 전달할 수 있을까?
     } catch (error) {
       res.status(400);

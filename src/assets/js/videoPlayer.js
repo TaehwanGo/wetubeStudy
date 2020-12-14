@@ -10,6 +10,10 @@ const fullScreenBtn = document.getElementById("jsFullScreen");
 const currentTime = document.getElementById("currentTime");
 const totalTime = document.getElementById("totalTime");
 const volumeRange = document.getElementById("jsVolume");
+const videoRange = document.getElementById("jsVideoRange");
+const videoController = document.querySelector(".videoPlayer__controls");
+
+let checkFullScreen = false;
 
 const registerView = () => {
     const videoId = window.location.href.split("/videos/")[1];
@@ -41,30 +45,70 @@ function handleVolumeClick() {
     }
 }
 
+
+
+function watchFullScreen() {
+    if(checkFullScreen){ // full -> normal
+        fullScreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
+        videoContainer.style.backgroundColor = "#f0f0f0";
+        videoContainer.style.padding = "7px 9px";
+        checkFullScreen = false; 
+    }
+    else { // normal -> full
+        videoContainer.style.backgroundColor = "black";
+        videoContainer.style.padding = "0px";
+        checkFullScreen = true;
+        window.addEventListener("keydown", (event) => { 
+            if(event.keyCode === 27){
+                console.log("esc가 눌려서 버튼 원복")
+                fullScreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
+                videoContainer.style.backgroundColor = "#f0f0f0";
+                videoContainer.style.padding = "7px 9px";
+            }
+        });
+    }
+}
+
 function exitFullScreen() {
     fullScreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
     fullScreenBtn.addEventListener("click", goFullScreen);
-    if (document.exitFullscreen) {
-        document.exitFullscreen();
+    if (videoContainer.exitFullscreen) {
+        videoContainer.exitFullscreen();
+        // videoContainer.style.backgroundColor = "#f0f0f0";
+        // videoContainer.style.padding = "7px 9px";
     } else if (document.mozCancelFullScreen) {
-        document.mozCancelFullScreen();
+        document.mozCancelFullScreen(); // dom은 fullscreen으로 만들 수 없음
+        // videoContainer.style.backgroundColor = "#f0f0f0";
+        // videoContainer.style.padding = "7px 9px";
     } else if (document.webkitExitFullscreen) {
         document.webkitExitFullscreen();
+        // videoContainer.style.backgroundColor = "#f0f0f0";
+        // videoContainer.style.padding = "7px 9px";
     } else if (document.msExitFullscreen) {
         document.msExitFullscreen();
+        // videoContainer.style.backgroundColor = "#f0f0f0";
+        // videoContainer.style.padding = "7px 9px";
     }
 }
 
 function goFullScreen() {
-    videoContainer.requestFullscreen(); // videoPlayer로 하는 것과 차이점 : 그래야 우리가 만든 컨트롤버튼들만 동작하게 할 수 있음
+    // videoContainer.requestFullscreen(); // videoPlayer로 하는 것과 차이점 : 그래야 우리가 만든 컨트롤버튼들만 동작하게 할 수 있음
     if (videoContainer.requestFullscreen) {
         videoContainer.requestFullscreen();
+        // videoContainer.style.backgroundColor = "black";
+        // videoContainer.style.padding = "0px";
     } else if (videoContainer.mozRequestFullScreen) {
         videoContainer.mozRequestFullScreen();
+        // videoContainer.style.backgroundColor = "black";
+        // videoContainer.style.padding = "0px";
     } else if (videoContainer.webkitRequestFullscreen) {
         videoContainer.webkitRequestFullscreen();
+        // videoContainer.style.backgroundColor = "black";
+        // videoContainer.style.padding = "0px";
     } else if (videoContainer.msRequestFullscreen) {
         videoContainer.msRequestFullscreen();
+        // videoContainer.style.backgroundColor = "black";
+        // videoContainer.style.padding = "0px";
     }
     fullScreenBtn.innerHTML = '<i class="fas fa-compress"></i>';
     fullScreenBtn.removeEventListener("click", goFullScreen);
@@ -89,8 +133,12 @@ const formatDate = totalSeconds => {
     return `${hours}:${minutes}:${seconds}`;
 };
 
-function setCurrentTime() {
+function updateTime() {
+    // display current time string
     currentTime.innerHTML = formatDate(Math.floor(videoPlayer.currentTime));
+
+    // video range update
+    videoRange.value = videoPlayer.currentTime;
 }
   
 async function setTotalTime() {
@@ -131,17 +179,83 @@ function handleDrag(event) {
     }
 }
 
+function handleVideoDrag() {
+    videoPlayer.currentTime = videoRange.value;
+    videoRange.max = Math.floor(videoPlayer.duration);
+}
+
+function handleSpace() {
+    window.addEventListener('keydown', (event) => {
+        event.preventDefault;
+        if(event.keyCode === 32){
+            if(videoPlayer.paused){
+                videoPlayer.play();
+                playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+            } else{
+                videoPlayer.pause();
+                playBtn.innerHTML = '<i class="fas fa-play"></i>';
+            }
+        }
+    });
+}
+
+function hideController() {
+    videoController.style.opacity = 0;
+    videoController.style.transition = "0.4s linear";
+    hideVolumeRange();
+    console.log("hideController()");
+}
+
+function handleMouseMove() {
+    let setHideController = null;
+    videoPlayer.addEventListener('mousemove', ()=>{
+        videoController.style.opacity = 1;
+        window.clearTimeout(setHideController);
+        setHideController = setTimeout(hideController, 3000);
+    });
+}
+
+function handleVideoClick() {
+    if(videoPlayer.paused){
+        videoPlayer.play();
+        playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+    } else{
+        videoPlayer.pause();
+        playBtn.innerHTML = '<i class="fas fa-play"></i>';
+    }
+}
+
+function showVolumeRange() {
+    volumeRange.style.opacity = 1;
+    volumeRange.style.transition = "0.2s linear";
+}
+
+function hideVolumeRange() {
+    volumeRange.style.opacity = 0;
+    volumeRange.style.transition = "0.2s linear";
+}
+
+
 function init(){
     // 우리가 원하는 기능적인 부분 추가 - adding, finding 변수를 더 할 에정(아직 이해 안됨)
     // videoPlayer = videoContainer.querySelector("video"); // const로 이 안에서 선언 시 다른 함수에서 사용 불가능하기 때문에 밖에서 let으로 선언함 // 방법1
+    handleSpace(); // play and pause by space
+    handleMouseMove();
     videoPlayer.volume = 0.5;
-    playBtn.addEventListener("click", handlePlayClick)
+    videoRange.value = 0;
+    videoRange.max = Math.floor(videoPlayer.duration);
+    playBtn.addEventListener("click", handlePlayClick);
     volumeBtn.addEventListener("click", handleVolumeClick);
     fullScreenBtn.addEventListener("click", goFullScreen);
     videoPlayer.addEventListener("loadedmetadata", setTotalTime);
-    videoPlayer.addEventListener("timeupdate", setCurrentTime);
+    videoPlayer.addEventListener("timeupdate", updateTime);
     videoPlayer.addEventListener("ended", handleEnded);
     volumeRange.addEventListener("input", handleDrag);
+    volumeBtn.addEventListener("mouseenter", showVolumeRange);
+    volumeRange.addEventListener("mouseleave", hideVolumeRange);
+    videoRange.addEventListener("input", handleVideoDrag);
+    videoPlayer.addEventListener("click", handleVideoClick);
+    videoContainer.addEventListener("fullscreenchange", watchFullScreen);
 }
 
 if(videoContainer){
