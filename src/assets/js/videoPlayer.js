@@ -244,6 +244,7 @@ function init(){
     videoPlayer.volume = 0.5;
     videoRange.value = 0;
     videoRange.max = Math.floor(videoPlayer.duration);
+    setTotalTime();
     playBtn.addEventListener("click", handlePlayClick);
     volumeBtn.addEventListener("click", handleVolumeClick);
     fullScreenBtn.addEventListener("click", goFullScreen);
