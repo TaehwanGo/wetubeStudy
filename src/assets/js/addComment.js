@@ -94,9 +94,16 @@ const sendComment = async (comment) => {
 const handleSubmit = (event) => {
     event.preventDefault(); // 댓글 추가 시 새로고침 되는 것을 막음
     const commentInput = addCommentForm.querySelector("input"); // submit한 시점에 input에 있는 값을 가져올 것이므로 input text 태그에 name속성이 필요 없음
-    const comment = commentInput.value;
-    sendComment(comment);
-    commentInput.value = ""; // 댓글을 등록하면 빈칸으로 만들어줌
+    console.log("comment:",commentInput.value);
+    if(commentInput.value === ''){
+        return
+    }
+    else {
+        const comment = commentInput.value;
+        
+        sendComment(comment);
+        commentInput.value = ""; // 댓글을 등록하면 빈칸으로 만들어줌
+    }
 }
 
 const checkLogin = async () => {

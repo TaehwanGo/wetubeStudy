@@ -144,16 +144,16 @@ function updateTime() {
 async function setTotalTime() {
     let totalTimeString;
     // console.log(videoPlayer.duration);
-    if(videoPlayer.duration !== Infinity){
-        totalTimeString = formatDate(videoPlayer.duration);
-    }
-    else {
+    // if(videoPlayer.duration !== Infinity){
+    //     totalTimeString = formatDate(videoPlayer.duration);
+    // }
+    // else {
         const blob = await fetch(videoPlayer.src).then(response => response.blob()); // fetch는 http통신용인줄 알았는데
         // videoPlayer.src를 받아서 그걸 서버에 요청해서 응답을 받으면 response.blob반환(blob는 파일)
         const duration = await getBlobDuration(URL.createObjectURL(blob));
         console.log(duration);
         totalTimeString = formatDate(duration);
-    }
+    // }
     totalTime.innerHTML = totalTimeString;
     // setInterval(getCurrentTime, 1000);
     // 
@@ -244,11 +244,11 @@ function init(){
     videoPlayer.volume = 0.5;
     videoRange.value = 0;
     videoRange.max = Math.floor(videoPlayer.duration);
-    setTotalTime();
+    // setTotalTime(); // 비디오 플레이어에 토탈 시간 수정 필요
     playBtn.addEventListener("click", handlePlayClick);
     volumeBtn.addEventListener("click", handleVolumeClick);
     fullScreenBtn.addEventListener("click", goFullScreen);
-    videoPlayer.addEventListener("loadedmetadata", setTotalTime);
+    videoPlayer.addEventListener("loadedmetadata", setTotalTime); // 느리면 이 이벤트가 감지가 안되는것 같다. 
     videoPlayer.addEventListener("timeupdate", updateTime);
     videoPlayer.addEventListener("ended", handleEnded);
     volumeRange.addEventListener("input", handleDrag);
