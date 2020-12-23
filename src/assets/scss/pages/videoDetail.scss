@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 0px 4vw;
     .video__info {
       width: 100%;
       max-width: 850px;
@@ -33,7 +34,8 @@
       }
     }
     .video__comments {
-      width: 70vh;
+      width: 100%;
+      max-width: 850px;
       margin-top: 25px;
       text-align: center;
       .video__comment-number {
@@ -43,48 +45,53 @@
         margin-top: 25px;
         width: 100%;
         input {
-          max-width: 98%;
+          max-width: 100%;
         }
       }
     }
     .video__comments-list {
       margin-top: 35px;
       li {
-        background-color: #ecf0f1; // #3498db;
+        background-color: #ecf0f1;
         color: black;
         padding: 10px 15px;
-        border-radius: 20px;
-        border-bottom-left-radius: 0px;
+        border-radius: 15px;
         &:not(:last-child) {
           margin-bottom: 15px;
         }
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        .comment-contents {
+        display: grid;
+        grid-template-columns: 30px 1fr 30px;
+        gap: 10px;
+        
+        .comment-creator-avatar {
+          width: 30px;
+          height: 30px;
+          border-radius: 50%;
+        }
+        .comment-box{          
           display: flex;
-          justify-content: flex-start;
-          align-items: center;
-          .comment-userInfo {
-            margin-right: 4vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            img {
-              width: 30px;
-              height: 30px;
-              border-radius: 50%;
-            }
-            span {
-              margin-top: 5px;
-              padding: 3px 5px;
-              background-color: white;
-              border-radius: 7px;
-            }
+          flex-direction: column;
+          align-items: flex-start;
+          span {
+            white-space: normal;
+            word-break: break-all;
+          }            
+          .comment-creator {
+            font-size: 0.8rem;
+            margin-bottom: 5px;
           }
         }
-        i {
-          cursor: pointer;
+        .comment-icon-container{
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+          i {
+            cursor: pointer;
+          }
+          i:first-child{
+            margin-bottom: 10px;
+          }
         }
       }
     }

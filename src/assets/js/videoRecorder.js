@@ -20,7 +20,7 @@ const handleVideoData = (event) => {
 function stopStreamedVideo(videoElem) { // 녹화종료 후 카메라끄는 부분
     const stream = videoElem.srcObject;
     const tracks = stream.getTracks();
-    
+    // console.log(tracks);
     tracks.forEach(function(track) {
         track.stop();
     });

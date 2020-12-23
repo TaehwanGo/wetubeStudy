@@ -14,59 +14,72 @@ const increaseNumber = () => {
 
 const addComment = (newComment) => { //comment, commentObject // 댓글이 등록되면 새로고침 없이 댓글이 바로 등록되는 것처럼 보이게 하는 것
     const li = document.createElement("li");
-    const commentText = document.createElement("span");
-    const creatorName = document.createElement("span"); // .setAttribute("class", "userName") create이랑 동시엔 안되나보다
-    const icon = document.createElement("i");
-    const commentContents = document.createElement("div");
-    const commentUserInfo = document.createElement("div");
     const avatarImg = document.createElement("img");
+    const commentBox = document.createElement("div");
+    const creatorName = document.createElement("span");
+    const commentText = document.createElement("span");
+    const commentIconContainer = document.createElement("div");
+    const editIcon = document.createElement("i");
+    const deleteIcon = document.createElement("i");
 
-    // delete icon
-    icon.id = "jsCommentDeleteButton";
-    icon.className = "far fa-trash-alt";
-
-    // contents
-    li.id = newComment.creator;
+    // creator-avatar
     avatarImg.src = newComment.avatarUrl;
+    avatarImg.setAttribute("class", "comment-creator-avatar");
+
+    // commentBox
     creatorName.innerHTML = newComment.name;
+    creatorName.setAttribute("class", "comment-creator");
     commentText.innerHTML = newComment.text;
+    commentText.setAttribute("class", "comment-text");
+    commentBox.appendChild(creatorName);
+    commentBox.appendChild(commentText);
 
-    // appendChild to userInfo
-    commentUserInfo.appendChild(avatarImg);
-    commentUserInfo.appendChild(creatorName);
+    // commentIconContainer
+    editIcon.setAttribute("class", "fas fa-pen");
+    deleteIcon.id = "jsCommentDeleteButton";
+    deleteIcon.className = "far fa-trash-alt";
+    commentIconContainer.appendChild(editIcon);
+    commentIconContainer.appendChild(deleteIcon);
 
-    // appendChild to contents
-    commentContents.appendChild(commentUserInfo);
-    commentContents.appendChild(commentText);
-
-    // appendChild to li
-    li.appendChild(commentContents);
-    li.appendChild(icon);
+    //  appendChild to li
+    li.id = newComment.creator;
+    li.appendChild(avatarImg);
+    li.appendChild(commentBox);
+    li.appendChild(commentIconContainer);
 
     // styling (like css) layout
-    commentContents.style.display = "flex";
-    commentContents.style.justifyContent = "flex-start";
-    commentContents.style.alignItems = "center";
-    commentUserInfo.style.marginRight = "4vh";
-    commentUserInfo.style.display = "flex";
-    commentUserInfo.style.flexDirection = "column";
-    commentUserInfo.style.alignItems = "center";
-
-    // styling (like css) size
+    // commentContents.style.display = "flex";
+    li.style.display = "grid";
+    li.style.gridTemplateColumns = "30px 1fr 30px";
+    li.style.gap = "10px";
+    // li.style.marginBottom = "15px";
     avatarImg.style.width = "30px";
     avatarImg.style.height = "30px";
     avatarImg.style.borderRadius = "50%";
-    creatorName.style.marginTop = "5px";
-    creatorName.style.padding = "3px 5px";
-    creatorName.style.backgroundColor = "white";
-    creatorName.style.borderRadius = "7px";
 
+    commentBox.style.display = "flex";
+    commentBox.style.flexDirection = "column";
+    commentBox.style.alignItems = "flex-start";
 
+    commentText.style.whiteSpace = "normal";
+    commentText.style.wordBreak = "break-all";
+
+    creatorName.style.fontSize = "0.8rem";
+    creatorName.style.marginBottom = "5px";
+
+    commentIconContainer.style.height = "100%";
+    commentIconContainer.style.display = "flex";
+    commentIconContainer.style.flexDirection = "column";
+    commentIconContainer.style.justifyContent = "flex-start";
+
+    editIcon.style.cursor = "pointer";
+    editIcon.style.marginBottom = "10px";
+    deleteIcon.style.cursor = "pointer";
 
     commentList.prepend(li); // 최신것이 맨앞으로 <-> append는 최신것이 맨뒤로
     
     increaseNumber();
-    initDelete(commentList); // 이게 왜 실행이 안될까
+    initDelete(commentList); // 이벤트 리스너 추가 됨
 }
 
 // api(comment를 db에 등록하는)로 보내주는 함수

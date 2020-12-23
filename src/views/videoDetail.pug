@@ -34,12 +34,13 @@ block content
             ul.video__comments-list#jsCommentList
                 each comment in video.comments.reverse()
                     li(id=`${comment.id}`)
-                        .comment-contents
-                            .comment-userInfo
-                                img(src=comment.avatarUrl, alt="avatarUrl")
-                                span=comment.name
-                            span=comment.text
+                        img.comment-creator-avatar(src=comment.avatarUrl, alt="avatarUrl")
+                        .comment-box
+                            span.comment-creator=comment.name
+                            span.comment-text=comment.text
                         //- span=`${loggedUser.id}, ${comment.creator}`
-                        if loggedUser && (comment.creator == loggedUser.id)
-                            <i id="jsCommentDeleteButton" class="far fa-trash-alt"></i>
-                            //- input.comment-deleteBtn(type="submit", clickable=false, value="")
+                        .comment-icon-container
+                            if loggedUser && (comment.creator == loggedUser.id)
+                                <i class="fas fa-pen"></i>
+                                <i id="jsCommentDeleteButton" class="far fa-trash-alt"></i>
+                                //- input.comment-deleteBtn(type="submit", clickable=false, value="")

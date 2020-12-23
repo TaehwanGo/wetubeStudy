@@ -12,6 +12,7 @@ export const home = async (req, res) => { // async가 없다면 videos를 발견
         const videos = await Video.find({}).sort({'_id': -1}); // 역순으로 정렬 -1은 순서를 위아래를 바꾸겠다는 약속같은 것 
         res.render("home", {pageTitle:'Home', videos}); // res.send("Home") 대신 html을 보내기 위해 render로 수정, /views가 default 폴더이기 때문에 따로 import하지 않아도 자동으로 찾아서 전송함
         // console.log(next);
+        // console.log(__dirname);
     } catch(error) {
         console.log(error);
         res.render("home", {pageTitle:'Home', videos: []});

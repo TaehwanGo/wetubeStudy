@@ -16,6 +16,7 @@ import userRouter from "./routers/userRouter";
 import videoRouter from "./routers/videoRouter";
 import globalRouter from "./routers/globalRouter";
 import apiRouter from "./routers/apiRouter";
+import favicon from "serve-favicon";
 
 import "./passport";
 
@@ -29,9 +30,10 @@ app.use(helmet(
     }
 ));
 app.set('view engine', "pug");
-app.set("views", path.join(__dirname, "views"))
+app.set("views", path.join(__dirname, "views"));
 // app.use("/uploads", express.static("uploads")); // uploads에 있는 file을 전달하는 middleware // s3를 스토리지로 사용하면서 삭제
 app.use("/static", express.static(path.join(__dirname, "static"))); 
+app.use(favicon(path.join(__dirname, "public/image", "favicon.ico"))); // 이거 왜 안될까 : 브라우저 껏다 키니까 적용되어 있음
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
@@ -50,7 +52,6 @@ app.use(passport.session());
 
 // passport는 자기가 찾은 그 사용자를 req object에 담고 middleware.js에서 전역변수로 만듦
 app.use(localsMiddleware); // 이게 아래 라우터들 다음에 온다면 라우터들은 이 localsMiddleware를 사용하지 못 함
-
 app.use(routes.home, globalRouter);
 app.use(routes.users, userRouter); // 하나의 함수를 쓰는 대신 라우터를 쓰면 여러 route를 가질 수 있음 // get에서 use로 변경 // 만약 app.get 이라면? /user/edit 경로를 찾을 수 없음
 app.use(routes.videos, videoRouter);
