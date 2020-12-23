@@ -184,21 +184,6 @@ function handleVideoDrag() {
     videoRange.max = Math.floor(videoPlayer.duration);
 }
 
-function handleSpace() {
-    window.addEventListener('keydown', (event) => {
-        event.preventDefault;
-        if(event.keyCode === 32){
-            if(videoPlayer.paused){
-                videoPlayer.play();
-                playBtn.innerHTML = '<i class="fas fa-pause"></i>';
-            } else{
-                videoPlayer.pause();
-                playBtn.innerHTML = '<i class="fas fa-play"></i>';
-            }
-        }
-    });
-}
-
 function hideController() {
     videoController.style.opacity = 0;
     videoController.style.transition = "0.4s linear";
@@ -235,11 +220,38 @@ function hideVolumeRange() {
     volumeRange.style.transition = "0.2s linear";
 }
 
+// function handleSpace() {
+//     window.addEventListener('keydown', (event) => {
+//         event.preventDefault();
+//         if(event.keyCode === 32){
+//             if(videoPlayer.paused){
+//                 videoPlayer.play();
+//                 playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+//             } else{
+//                 videoPlayer.pause();
+//                 playBtn.innerHTML = '<i class="fas fa-play"></i>';
+//             }
+//         }
+//     });
+// }
+
+function handleSpace(event) {
+    event.preventDefault();
+    if(event.keyCode === 32){
+        if(videoPlayer.paused){
+            videoPlayer.play();
+            playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+        } else{
+            videoPlayer.pause();
+            playBtn.innerHTML = '<i class="fas fa-play"></i>';
+        }
+    }
+}
 
 function init(){
     // 우리가 원하는 기능적인 부분 추가 - adding, finding 변수를 더 할 에정(아직 이해 안됨)
     // videoPlayer = videoContainer.querySelector("video"); // const로 이 안에서 선언 시 다른 함수에서 사용 불가능하기 때문에 밖에서 let으로 선언함 // 방법1
-    handleSpace(); // play and pause by space
+    
     handleMouseMove();
     videoPlayer.volume = 0.5;
     videoRange.value = 0;
@@ -251,6 +263,12 @@ function init(){
     videoPlayer.addEventListener("loadedmetadata", setTotalTime); // 느리면 이 이벤트가 감지가 안되는것 같다. 
     videoPlayer.addEventListener("timeupdate", updateTime);
     videoPlayer.addEventListener("ended", handleEnded);
+    videoPlayer.addEventListener("mouseenter", () => {
+        window.addEventListener("keypress", handleSpace);
+    }); // handleSpace(); // play and pause by space
+    videoPlayer.addEventListener("mouseleave", () => {
+        window.removeEventListener("keypress", handleSpace);
+    })
     volumeRange.addEventListener("input", handleDrag);
     volumeBtn.addEventListener("mouseenter", showVolumeRange);
     volumeRange.addEventListener("mouseleave", hideVolumeRange);
