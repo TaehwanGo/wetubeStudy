@@ -7,19 +7,23 @@ block content
             src:video.fileUrl
         })
         .video__info
-            //- fix the error, property id of null 
-            if loggedUser && video.creator.id === loggedUser.id
-                a(href=routes.editVideo(video.id))
-                    button Edit video
-            h5.video__title=video.title
-            p.video__description=video.description
-            if video.views === 1
-                span.video__views 1 view
-            else 
-                span.video__views #{video.views} views
-            .video__author
-                |Uploaded by 
-                a(href=routes.userDetail(video.creator.id))=video.creator.name
+            .video__info__top
+                h5.video__title=video.title
+                if video.views === 1
+                    span.video__views 1 view
+                else 
+                    span.video__views #{video.views} views
+            .video__info__bottom
+                .video__author
+                    .video__author__info
+                        a(href=routes.userDetail(video.creator.id))
+                            img.video__author__avatar(src=video.creator.avatarUrl, alt="avatarUrl")
+                        a(href=routes.userDetail(video.creator.id))=video.creator.name
+                    .video__author__button
+                        if loggedUser && video.creator.id === loggedUser.id
+                            a(href=routes.editVideo(video.id))
+                                button Edit video
+                p.video__description=video.description
         .video__comments
             if video.comments.length === 1
                 span.video__comment-number
