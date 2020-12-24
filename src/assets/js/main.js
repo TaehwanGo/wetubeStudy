@@ -3,3 +3,4 @@ import "./videoPlayer";
 import "./videoRecorder";
 import "./addComment";
 import "./deleteComment";
+import "./headerNav";

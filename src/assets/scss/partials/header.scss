@@ -8,6 +8,70 @@
     height: 50px;
     z-index: 10;
     color:  #606060;
+    .header__logo__container {
+      display: flex;
+      align-items: flex-start;
+      .header__nav__icon {
+        font-size: 20px;
+        align-self: center;
+        cursor: pointer;
+      }
+      .header__mainLogo{
+        margin-left: 20px;
+        display: flex;
+        align-items: flex-start;
+        i {
+          color: $red;
+          font-size: 25px;
+        }
+        .header__title {
+          color: black;
+          margin-left: 4px;
+          font-size: 23px;
+          font-weight: 650;
+          letter-spacing: -2px;
+          span:first-child {
+            letter-spacing: -4px;
+          }
+          span:last-child {
+            margin-left: 1px;
+            letter-spacing: -1px;
+          }
+        }
+      }
+      .tony {
+        font-size: 10px;
+        // transform: scale(0.9);
+      }
+    }
+    .header__nav__wrapper{
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      width: 0%; // 100% // 0%
+      height:100%;
+      position: fixed;
+      z-index:1;
+      top: 0;
+      left: 0;
+      overflow-x: hidden; // 이게 있어야 nav안의 컨텐츠가 안보이게 됨
+      transition: 0.5s ease-in-out;
+      
+      .header__nav {
+        background-color: white;
+        .header__nav__logo__container{
+          display: flex;
+          align-items: center;
+          height: 50px;
+          border-bottom: lightgray 1px solid;
+          padding: 0px 10px;
+        }
+      }
+      .header__nav__cover{
+        background-color: black;
+        opacity: 0.5;
+      }
+    }
+    
     .header__wrapper {
       padding: 5px 10px;
       width: 100%;
@@ -19,32 +83,7 @@
       .header__column {
         &:first-child {
           display: flex;
-          a{
-            display: flex;
-            align-items: flex-start;
-            i {
-              color: $red;
-              font-size: 25px;
-            }
-            .header__title {
-              color: black;
-              margin-left: 4px;
-              font-size: 23px;
-              font-weight: 650;
-              letter-spacing: -2px;
-              span:first-child {
-                letter-spacing: -4px;
-              }
-              span:last-child {
-                margin-left: 1px;
-                letter-spacing: -1px;
-              }
-            }
-          }
-          .tony {
-            font-size: 10px;
-            // transform: scale(0.9);
-          }
+          align-items: center;
         }
         &:nth-child(2) {
           width: 100%;

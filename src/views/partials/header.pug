@@ -1,13 +1,30 @@
 header.header
+    .header__nav__wrapper#jsNavWrapper
+        .header__nav
+            .header__nav__logo__container
+                .header__logo__container
+                    .header__nav__icon#jsInnerNavIcon
+                        <i class="fas fa-bars"></i>
+                    a.header__mainLogo#jsInnerMainLogo(href=routes.home)
+                        i.fab.fa-youtube
+                        h1.header__title W
+                            span eT
+                            span u
+                            span be
+                    span.tony Tony
+        .header__nav__cover#jsNavCover
     .header__wrapper
         .header__column
-            a(href=routes.home)
-                i.fab.fa-youtube
-                h1.header__title W
-                    span eT
-                    span u
-                    span be
-            span.tony Tony
+            .header__logo__container
+                .header__nav__icon#jsHeaderNavIcon
+                    <i class="fas fa-bars"></i>
+                a.header__mainLogo(href=routes.home)
+                    i.fab.fa-youtube
+                    h1.header__title W
+                        span eT
+                        span u
+                        span be
+                span.tony Tony
         .header__column
             form(action=routes.search, method="get")
                 //- action은 이동할 url 임 
