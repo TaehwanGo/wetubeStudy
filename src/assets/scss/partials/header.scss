@@ -1,6 +1,13 @@
 .header {
-    background-color: $red;
-    margin-bottom: 50px;
+    display: flex;
+    align-items: center;
+    background-color: white;
+    width: 100%;
+    min-width: 500px;
+    position: fixed;
+    height: 50px;
+    z-index: 10;
+    color:  #606060;
     .header__wrapper {
       padding: 5px 10px;
       width: 100%;
@@ -10,9 +17,34 @@
       grid-template-columns: repeat(3, 1fr);
       align-items: center;
       .header__column {
-        i {
-          color: white;
-          font-size: 30px;
+        &:first-child {
+          display: flex;
+          a{
+            display: flex;
+            align-items: flex-start;
+            i {
+              color: $red;
+              font-size: 25px;
+            }
+            .header__title {
+              color: black;
+              margin-left: 4px;
+              font-size: 23px;
+              font-weight: 650;
+              letter-spacing: -2px;
+              span:first-child {
+                letter-spacing: -4px;
+              }
+              span:last-child {
+                margin-left: 1px;
+                letter-spacing: -1px;
+              }
+            }
+          }
+          .tony {
+            font-size: 10px;
+            // transform: scale(0.9);
+          }
         }
         &:nth-child(2) {
           width: 100%;
@@ -23,7 +55,7 @@
         }
         ul {
           display: flex;
-          color: white;
+          // color: white;
           font-weight: 600;
           text-transform: uppercase;
           li:not(:last-child) {
@@ -47,7 +79,7 @@
           }
         }
         a[href]   {
-            color: white;
+            color: #606060;
         }
       }
     }

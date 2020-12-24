@@ -160,8 +160,7 @@ export const logout = (req, res) => {
 
 export const getMe = async (req, res) => { // userDetail이 하는 것과 같은 일을 함
     // 작성자의 영상이 안보이는 문제 있음
-    console.log(req.user); // undefined
-    // console.log(res.user); // undefined
+    // console.log(req.user); // undefined
     // console.log(req);
     try {
         const user = await User.findById(req.user._id).populate("videos");
