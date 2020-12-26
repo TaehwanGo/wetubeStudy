@@ -258,12 +258,15 @@ function init(){
     videoRange.value = 0;
     videoRange.max = Math.floor(videoPlayer.duration);
     console.log('init:',Math.floor(videoPlayer.duration));
+    if(!isNaN(videoPlayer.duration) && (videoPlayer.duration !== Infinity)){
+        console.log("setTotalTimeInitIf")
+        totalTime.innerHTML = formatDate(videoPlayer.duration);
+    }
     // setTotalTime(); // 비디오 플레이어에 토탈 시간 수정 필요
     playBtn.addEventListener("click", handlePlayClick);
     volumeBtn.addEventListener("click", handleVolumeClick);
     fullScreenBtn.addEventListener("click", goFullScreen);
     videoPlayer.addEventListener("loadedmetadata", setTotalTime); // 느리면 이 이벤트가 감지가 안되는것 같다. 
-    // videoPlayer.addEventListener("onload", setTotalTime); // 느리면 이 이벤트가 감지가 안되는것 같다. 
     videoPlayer.addEventListener("timeupdate", updateTime);
     videoPlayer.addEventListener("ended", handleEnded);
     videoPlayer.addEventListener("mouseenter", () => {
