@@ -257,11 +257,11 @@ function init(){
     videoPlayer.volume = 0.5;
     videoRange.value = 0;
     videoRange.max = Math.floor(videoPlayer.duration);
-    setTotalTime(); // 비디오 플레이어에 토탈 시간 수정 필요
+    // setTotalTime(); // 비디오 플레이어에 토탈 시간 수정 필요
     playBtn.addEventListener("click", handlePlayClick);
     volumeBtn.addEventListener("click", handleVolumeClick);
     fullScreenBtn.addEventListener("click", goFullScreen);
-    // videoPlayer.addEventListener("loadedmetadata", setTotalTime); // 느리면 이 이벤트가 감지가 안되는것 같다. 
+    videoPlayer.addEventListener("loadedmetadata", setTotalTime); // 느리면 이 이벤트가 감지가 안되는것 같다. 
     // videoPlayer.addEventListener("onload", setTotalTime); // 느리면 이 이벤트가 감지가 안되는것 같다. 
     videoPlayer.addEventListener("timeupdate", updateTime);
     videoPlayer.addEventListener("ended", handleEnded);
