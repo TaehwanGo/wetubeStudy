@@ -143,21 +143,21 @@ function updateTime() {
   
 async function setTotalTime() {
     let totalTimeString;
-    // console.log(videoPlayer.duration);
-    // if(videoPlayer.duration !== Infinity){
-    //     totalTimeString = formatDate(videoPlayer.duration);
-    // }
-    // else {
+    console.log('setTotalTimeStart0:',videoPlayer.duration);
+    console.log('setTotalTimeStart1:',formatDate(videoPlayer.duration));
+    if(!isNaN(videoPlayer.duration) && (videoPlayer.duration !== Infinity)){
+        console.log("setTotalTimeIf")
+        totalTimeString = formatDate(videoPlayer.duration);
+    }
+    else {
         console.log(videoPlayer.duration);
         const blob = await fetch(videoPlayer.src).then(response => response.blob()); // fetch는 http통신용인줄 알았는데
         // videoPlayer.src를 받아서 그걸 서버에 요청해서 응답을 받으면 response.blob반환(blob는 파일)
         const duration = await getBlobDuration(URL.createObjectURL(blob));
         console.log(duration);
         totalTimeString = formatDate(duration);
-    // }
-    totalTime.innerHTML = totalTimeString;
-    // setInterval(getCurrentTime, 1000);
-    // 
+    }
+    totalTime.innerHTML = totalTimeString; 
 }
 
 function handleEnded() {
@@ -257,7 +257,7 @@ function init(){
     videoPlayer.volume = 0.5;
     videoRange.value = 0;
     videoRange.max = Math.floor(videoPlayer.duration);
-    console.log(videoPlayer.duration);
+    console.log('init:',Math.floor(videoPlayer.duration));
     // setTotalTime(); // 비디오 플레이어에 토탈 시간 수정 필요
     playBtn.addEventListener("click", handlePlayClick);
     volumeBtn.addEventListener("click", handleVolumeClick);
