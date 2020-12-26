@@ -30,19 +30,19 @@ header.header
                 //- action은 이동할 url 임 
                 input(type="text", placeholder="Search by term...", name="term")
         .header__column
-            ul
+            <i class="fas fa-ellipsis-v header__menu__icon"></i>
+            ul.header__menu(hidden)
                 //- 왜 항상 로그인 된걸로 나오지? middleware에서 ||{}을 ||null로 바꾸니 됨
                 if !loggedUser
-                    li
-                        //- a(href="#") Join //- middlewares.js에서 routes.js를 import후 res.locals로 공유 했으므로 사용 가능
-                        a(href=routes.join) Join
-                    li
-                        a(href=routes.login) Log In
+                    a(href=routes.join)
+                        li Join
+                    a(href=routes.login)
+                        li Log In
                 else
                     //- #{console.log(user)}
-                    li
-                        a(href=`/videos${routes.upload}`) Upload
-                    li
-                        a(href=routes.me) Profile
-                    li
-                        a(href=routes.logout) Log out
+                    a(href=`/videos${routes.upload}`)
+                        li Upload
+                    a(href=routes.me)
+                        li Profile
+                    a(href=routes.logout)
+                        li Log out
