@@ -257,6 +257,7 @@ function init(){
     videoPlayer.volume = 0.5;
     videoRange.value = 0;
     videoRange.max = Math.floor(videoPlayer.duration);
+    console.log(videoPlayer.duration);
     // setTotalTime(); // 비디오 플레이어에 토탈 시간 수정 필요
     playBtn.addEventListener("click", handlePlayClick);
     volumeBtn.addEventListener("click", handleVolumeClick);
