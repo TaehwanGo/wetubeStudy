@@ -200,6 +200,7 @@ export const postDeleteComment = async (req, res) => {
     const {
         body: {commentId, videoId}
     } = req;
+    console.log("postDeleteComment실행");
     try {
         // video에서 지우고 comment에서도 지워야 함
         // const video = await Video.findById(videoId).comments.pull({_id:commentId}); // pointer로 가져오네
@@ -208,7 +209,8 @@ export const postDeleteComment = async (req, res) => {
         
         // video.save();
         // comment에서도 지우기
-        await Comment.findByIdAndRemove(commentId);
+        console.log("postDeleteCommentId:", commentId);
+        await Comment.findByIdAndRemove({_id:commentId}); // 방금 막 등록한 댓글은 왜 이게 안되지?
     } catch (error) {
         console.log(error);
         res.status(400);
@@ -216,3 +218,22 @@ export const postDeleteComment = async (req, res) => {
         res.end();
     }
 }
+
+// Edit Comment
+
+export const postEditComment = async (req, res) => {
+    const {
+      params: { id }, // post방식이지만 :id가 중간에 있으므로 가능
+      body: { editedText },
+    } = req;
+    try {
+        console.log("commentIdInController:", id);
+        const editedComment = await Comment.findOneAndUpdate({_id:id}, {text:editedText}); 
+        console.log(editedComment); // 왜 여기선 업데이트 전 comment가 찍히는거지? return값이 그 전에것을 return하나보다 - 어쨋든 업데이트는 잘 되는 중
+        res.json(editedComment);
+    } catch (error) {
+      res.status(400);
+    } finally {
+      res.end();
+    }
+};

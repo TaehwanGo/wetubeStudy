@@ -42,7 +42,8 @@ const addComment = (newComment) => { //comment, commentObject // 댓글이 등�
     commentIconContainer.appendChild(deleteIcon);
 
     //  appendChild to li
-    li.id = newComment.creator;
+    // li.id = newComment.creator;
+    li.id = newComment._id; // 여기에서 실수 하고 있었네 
     li.appendChild(avatarImg);
     li.appendChild(commentBox);
     li.appendChild(commentIconContainer);
@@ -92,12 +93,12 @@ const sendComment = async (comment) => {
             comment
         }
     });
-    console.log("response", response); // response.data에서 commentId받아서 li에 추가해줘야함 그리고 이벤트 리스너 추가
+    // console.log("response", response); // response.data에서 commentId받아서 li에 추가해줘야함 그리고 이벤트 리스너 추가
     const {
         data:newComment // { commentId, userName }
     } = response;
 
-    console.log("data(newComment):",newComment); // ok 확인 good
+    // console.log("data(newComment):",newComment); // ok 확인 good
     if(response.status === 200){
         addComment(newComment);
     }
@@ -107,7 +108,7 @@ const sendComment = async (comment) => {
 const handleSubmit = (event) => {
     event.preventDefault(); // 댓글 추가 시 새로고침 되는 것을 막음
     const commentInput = addCommentForm.querySelector("input"); // submit한 시점에 input에 있는 값을 가져올 것이므로 input text 태그에 name속성이 필요 없음
-    console.log("comment:",commentInput.value);
+    // console.log("comment:",commentInput.value);
     if(commentInput.value === ''){
         return
     }

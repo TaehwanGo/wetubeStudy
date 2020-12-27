@@ -33,7 +33,7 @@ export const deleteCommentOnLocal = (commentId) => { // local에서 삭제(새�
 
 export const deleteCommentFromDB = async (videoId, commentId) => {
     // fake delete 
-    console.log("videoId: ",videoId, "commentId", commentId);
+    // console.log("videoId: ",videoId, "commentId", commentId);
     try {
         const response = await axios({
             method: "POST",
@@ -43,10 +43,10 @@ export const deleteCommentFromDB = async (videoId, commentId) => {
                 videoId
             }
         });
-        console.log(response);
+        // console.log(response);
 
-        if(response.status === 200){ // 미완성
-            console.log("status 200 이면 실행 됨");
+        if(response.status === 200){ 
+            // console.log("status 200 이면 실행 됨");
             deleteCommentOnLocal(commentId); // 서버에서 ok 응답을 받았으므로 프론트에서 오프라인으로 지움
         }
     } catch (error) {
@@ -57,7 +57,7 @@ export const deleteCommentFromDB = async (videoId, commentId) => {
 export const handleDeleteClick = (event) => {
     // 클릭하면 부모 html의 아이디를 얻을 수 있다고 한다
     // event.preventDefault(); // 삭제버튼으로 form태그를 사용안하므로 필요 없어짐
-    // console.log(event.target);
+    // console.log("handleDeleteClick:",event.target);
     if(confirm("댓글을 삭제 하시겠습니까?")){ // 예
         // console.log(event.target);
         // postDeleteComment에 commentId, videoId를 보내야 함
@@ -72,36 +72,105 @@ export const handleDeleteClick = (event) => {
     }
 }
 
-function handleEditClick(event) {
-    console.log(event.target);
+export const sendEditedComment = async (spanComment, editedText) => { 
+    const commentId = spanComment.parentNode.parentNode.id;
+    // console.log("commentId:",commentId);
+    const response = await axios({ 
+        method: "POST",
+        url: `/api/${commentId}/editComment`,
+        data: {
+            editedText
+        }
+    });
+    // console.log("response", response);
+}
+
+export function showEditForm(spanComment) {
+    const editForm = document.createElement('div');
+    const editText = document.createElement('input');
+    const buttonContainer = document.createElement('div');
+    const editCommentCancelBtn = document.createElement('button');
+    const editCommentSubmit = document.createElement('button');
+
+    editText.setAttribute('type', 'text');
+    editCommentSubmit.innerHTML = "save";
+    editText.value = spanComment.textContent;
+    editCommentCancelBtn.innerHTML = "cancel";
+
+    buttonContainer.appendChild(editCommentCancelBtn);
+    buttonContainer.appendChild(editCommentSubmit);
+
+    editForm.appendChild(editText);
+    editForm.appendChild(buttonContainer);
+
+    // styling
+    editCommentCancelBtn.style.width = "70px";
+    editCommentCancelBtn.style.backgroundColor = "#f5f5f5";
+    editCommentCancelBtn.style.color = "#444444";
+    editCommentCancelBtn.style.marginRight = "5px";
+    editCommentSubmit.style.width = "70px";
+    buttonContainer.style.display = "flex";
+    buttonContainer.style.justifyContent = "flex-end";
+    buttonContainer.style.marginTop = "5px";
+    editForm.style.width = "100%";
+
+    spanComment.setAttribute('hidden', 'ILoveYou'); // hide comment span
+    const iconBox = spanComment.parentNode.parentNode.children[2];
+    iconBox.style.display = "none";
+    // console.log(spanComment.parentNode.parentNode.children[2]);
+    spanComment.parentNode.appendChild(editForm);
+
+    editCommentSubmit.addEventListener('click', (event) => {
+        // save edited comment using API
+        const editedText = event.target.parentNode.parentNode.children[0].value;
+        // console.log("justEditedText:",editedText);
+        sendEditedComment(spanComment, editedText);
+
+        spanComment.textContent = editedText;
+        editForm.remove();
+        spanComment.removeAttribute('hidden');
+        iconBox.style.display = "flex";
+    });
+    editCommentCancelBtn.addEventListener('click', () => {
+        // show the comment box(span) again
+        editForm.remove();
+        spanComment.removeAttribute('hidden');
+        iconBox.style.display = "flex";
+    });
+}
+
+export function handleEditClick(event) {
+    // console.log(event.target);
     // const commentText = event.target.value;
     // console.log("commentText: ",commentText);
     // event.target.setAttribute('contentEditable', true);
     const spanComment = event.target.parentNode.parentNode.children[1].children[1];
-    
-    spanComment.setAttribute('contentEditable', true);
-    spanComment.focus();
-    console.log(spanComment.textContent);
+    // console.log("comment text:",spanComment.textContent);
+    showEditForm(spanComment);
 }
 
+export const addListenerToIcons = (event) => {
+    const target = event.target;
+    // console.log(target);
+    if(target.matches('.fa-pen')){
+        // console.log('edit clicked!');
+        handleEditClick(event); 
+    } else if (target.matches('.fa-trash-alt')){
+        // console.log('delete clicked!');
+        handleDeleteClick(event);
+    }
+}
+
+
 export function initDelete(ulFromAddComment) {
-    console.log("initDelete실행: ",ulFromAddComment);
+    // console.log("initDelete실행: ",ulFromAddComment);
     if(ulFromAddComment){
         commentList = ulFromAddComment;
     }
 
     // 새로운 방식 이벤트 위임(event delegation)
-    commentList.addEventListener('click', event => {
-        const target = event.target;
-        // console.log(target);
-        if(target.matches('.fa-pen')){
-            console.log('edit clicked!');
-            handleEditClick(event);
-        } else if (target.matches('.fa-trash-alt')){
-            console.log('delete clicked!');
-            handleDeleteClick(event);
-        }
-    })
+    commentList.removeEventListener('click', addListenerToIcons); // 댓글 등록 시 기존에 리스너에 계속 덧붙여서 등록했기 때문에 기존리스너 삭제
+    commentList.addEventListener('click', addListenerToIcons);
     
     
     // 기존 구현 방식 : 하나하나 이벤트 리스너를 달아줌 // object형태로 가져와야 됨 // 그래야 for문을 돌려서 event리스너를 달 수 있음

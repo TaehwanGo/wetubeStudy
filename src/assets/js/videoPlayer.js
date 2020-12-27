@@ -141,15 +141,15 @@ function updateTime() {
     videoRange.value = videoPlayer.currentTime;
 }
   
-async function setTotalTime() {
+async function setTotalTime() { // for local app
     let totalTimeString;
-    console.log('setTotalTimeStart0:',videoPlayer.duration);
-    console.log('setTotalTimeStart1:',formatDate(videoPlayer.duration));
+    // console.log('setTotalTimeStart0:',videoPlayer.duration);
+    // console.log('setTotalTimeStart1:',formatDate(videoPlayer.duration));
     if(!isNaN(videoPlayer.duration) && (videoPlayer.duration !== Infinity)){
-        console.log("setTotalTimeIf")
+        // console.log("setTotalTimeIf")
         totalTimeString = formatDate(videoPlayer.duration);
     }
-    else {
+    else { // just in case
         console.log(videoPlayer.duration);
         const blob = await fetch(videoPlayer.src).then(response => response.blob()); // fetch는 http통신용인줄 알았는데
         // videoPlayer.src를 받아서 그걸 서버에 요청해서 응답을 받으면 response.blob반환(blob는 파일)
@@ -157,6 +157,7 @@ async function setTotalTime() {
         console.log(duration);
         totalTimeString = formatDate(duration);
     }
+    videoRange.max = Math.floor(videoPlayer.duration);
     totalTime.innerHTML = totalTimeString; 
 }
 
@@ -221,21 +222,6 @@ function hideVolumeRange() {
     volumeRange.style.transition = "0.2s linear";
 }
 
-// function handleSpace() {
-//     window.addEventListener('keydown', (event) => {
-//         event.preventDefault();
-//         if(event.keyCode === 32){
-//             if(videoPlayer.paused){
-//                 videoPlayer.play();
-//                 playBtn.innerHTML = '<i class="fas fa-pause"></i>';
-//             } else{
-//                 videoPlayer.pause();
-//                 playBtn.innerHTML = '<i class="fas fa-play"></i>';
-//             }
-//         }
-//     });
-// }
-
 function handleSpace(event) {
     event.preventDefault();
     if(event.keyCode === 32){
@@ -257,8 +243,8 @@ function init(){
     videoPlayer.volume = 0.5;
     videoRange.value = 0;
     videoRange.max = Math.floor(videoPlayer.duration);
-    console.log('init:',Math.floor(videoPlayer.duration));
-    if(!isNaN(videoPlayer.duration) && (videoPlayer.duration !== Infinity)){
+    // console.log('init:',Math.floor(videoPlayer.duration));
+    if(!isNaN(videoPlayer.duration) && (videoPlayer.duration !== Infinity)){ // for deployed app
         console.log("setTotalTimeInitIf")
         totalTime.innerHTML = formatDate(videoPlayer.duration);
     }
